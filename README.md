@@ -55,6 +55,6 @@ Mujur Reborn hadir sebagai aplikasi web untuk membantu orang yang ingin mencari 
 
 <hr>
 
-## Tautan deployment aplikasi:
+## Tautan deployment aplikasi: http://valentino-vieri-mujurreborn.pbp.cs.ui.ac.id/
 
 <hr>
