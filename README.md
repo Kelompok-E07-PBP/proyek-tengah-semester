@@ -26,8 +26,8 @@ Mujur Reborn hadir sebagai aplikasi web untuk membantu orang yang ingin mencari 
 ## Daftar Modul:
 1. **Authentication (Bersama)**
 > Authentication adalah halaman di mana pengguna melakukan registrasi akun baru atau login ke aplikasi web dengan akun yang sudah dibuat sebelumnya.
-2. **Home Page (Bersama)**
-> Home adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web.
+2. **Main (Bersama)**
+> Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web.
 3. **Tambah Produk (Valentino Vieri Zhuo)**
 > Tambah Product adalah halaman berisi form supaya admin bisa tambahkan produk ke sistem aplikasi web.
 4. **Cari Produk (Dicky Bayu Sadewo)**
