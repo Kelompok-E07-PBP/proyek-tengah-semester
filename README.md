@@ -15,12 +15,9 @@ Mujur Reborn
 <hr>
 
 ## Cerita dan Manfaat:
-b. Deskripsi aplikasi (cerita aplikasi yang diajukan serta kebermanfaatannya):
-secara garis besar alur ceritanya mungkin mengenai orang yang baru masuk ke kota jakarta dan sedang bingung mencari dasi contohnya untuk kerja, sekolah, dll dengan menggunakan apilkasi web kita dia dapat mencari produk dasi dengan berbagai macam variasi dari web kita gt ya
+Selamat datang di Jakarta, kota metropolitan penuh peluang. Anda datang dengan harapan memulai hidup baru, yang tentunya dimulai dengan penampilan yang sesuai. Anda bersiap untuk bekerja dengan kemeja rapi, celana panjang formal, dan sabuk yang pas. Namun, ada satu hal yang terlupakan—dasi, aksesori penting yang melengkapi penampilan profesional Anda.
 
-Selamat datang di Kota Jakarta, sebuah kota metropolitan dengan banyak peluang. Anda datang ke sini dengan harapan mencari kehidupan baru. Kehidupan baru tentu saja perlu dimulai dengan penampilan baru. Anda memutuskan untuk berpakaian seperti orang yang biasa bekerja di kantor. Anda pakai kemeja, celana panjang, dan sabuk. Namun, Anda lupa membeli dasi dan kesulitan mencari dasi di berbagai toko. Tenang, Mujur Reborn hadir sebagai toko online yang memiliki berbagai opsi dasi untuk menemani penampilan baru Anda. 
-
-Mujur Reborn hadir sebagai aplikasi web untuk membantu orang yang ingin mencari dasi atau jepitan dasi.
+Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjawab kebutuhan Anda. Sebagai aplikasi web, Mujur Reborn menawarkan berbagai pilihan dasi dan aksesoris seperti jepitan dasi dengan variasi model, warna, dan harga yang dapat disesuaikan dengan kebutuhan. Dengan kemudahan berbelanja online, Anda dapat menemukan dasi yang tepat untuk melengkapi penampilan dan membantu Anda tampil lebih percaya diri di setiap kesempatan, baik itu untuk bekerja, sekolah, maupun acara formal lainnya.
 <hr>
 
 ## Daftar Modul:
@@ -28,8 +25,8 @@ Mujur Reborn hadir sebagai aplikasi web untuk membantu orang yang ingin mencari 
 > Authentication adalah halaman di mana pengguna melakukan registrasi akun baru atau login ke aplikasi web dengan akun yang sudah dibuat sebelumnya.
 2. **Main (Bersama)**
 > Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web.
-3. **Tambah Produk (Valentino Vieri Zhuo)**
-> Tambah Product adalah halaman berisi form supaya admin bisa tambahkan produk ke sistem aplikasi web.
+3. **Pembayaran (Valentino Vieri Zhuo)**
+> Pembayarab adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna.
 4. **Cari Produk (Dicky Bayu Sadewo)**
 > Cari Product adalah halaman untuk mencari produk di dalam aplikasi web.
 5. **Keranjang (Krisna Putra Purnomo)**
@@ -38,7 +35,7 @@ Mujur Reborn hadir sebagai aplikasi web untuk membantu orang yang ingin mencari 
 > Testimoni adalah halaman untuk menyampaikan ulasan terkait produk di dalam aplikasi web.
 7. **Pengiriman (Joel Anand Garcia Sinaga)**
 > Pengiriman adalah halaman untuk mengatur lokasi pengiriman produk yang telah dipilih pengguna.
-8. **Artikel Pewaratan (Muhammad Hamid)**
+8. **Tips Pewaratan (Muhammad Hamid)**
 > Artikel Pewaratan adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
 
 <hr>
