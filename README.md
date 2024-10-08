@@ -36,7 +36,7 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 7. **Pengiriman (Joel Anand Garcia Sinaga)**
 > Pengiriman adalah halaman untuk mengatur lokasi pengiriman produk yang telah dipilih pengguna.
 8. **Tips Pewaratan (Muhammad Hamid)**
-> Artikel Pewaratan adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
+> Tips Pewaratan adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
 
 <hr>
 
