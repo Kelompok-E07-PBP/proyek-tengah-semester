@@ -23,8 +23,8 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 ## Daftar Modul:
 1. **Main (Bersama)**
 > Main adalah halaman utama aplikasi web yang berisi daftar produk dalam toko. Selain itu, modul ini juga memiliki fitur login, register, dan logout.
-2. **Add (Valentino Vieri Zhuo)**
-> Add adalah halaman untuk menambahkan produk di dalam toko.
+2. **Edit (Valentino Vieri Zhuo)**
+> Edit adalah halaman untuk menambahkan, menghapus, dan update produk di dalam toko.
 3. **Pembayaran (Dicky Bayu Sadewo)**
 > Pembayaran adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna termasuk konfirmasi pembayaran.
 4. **Keranjang (Krisna Putra Purnomo)**
@@ -44,7 +44,7 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 
 ## Peran:
 1. **Admin**
-> Admin adalah pengguna aplikasi yang memiliki hak untuk menambahkan produk dan mencari produk dalam aplikasi web.
+> Admin adalah pengguna aplikasi yang memiliki hak untuk edit produk dan mencari produk dalam aplikasi web.
 2. **Pelanggan**
 > Pelanggan adalah pengguna aplikasi yang memiliki hak untuk mencari produk, mengatur keranjang pembelian, menyampaikan testimoni, mengatur lokasi pengiriman, dan menyampaikan informasi terkait cara merawat produk tersebut.
 
