@@ -21,21 +21,19 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 <hr>
 
 ## Daftar Modul:
-1. **Authentication (Bersama)**
-> Authentication adalah halaman di mana pengguna melakukan registrasi akun baru atau login ke aplikasi web dengan akun yang sudah dibuat sebelumnya.
-2. **Main (Bersama)**
-> Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web.
-3. **Pembayaran (Valentino Vieri Zhuo)**
+1. **Main (Bersama)**
+> Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web. Selain itu, modul ini juga memiliki fitur login, register, dan logout.
+2. **Pembayaran (Valentino Vieri Zhuo)**
 > Pembayarab adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna.
-4. **Cari Produk (Dicky Bayu Sadewo)**
+3. **Cari Produk (Dicky Bayu Sadewo)**
 > Cari Product adalah halaman untuk mencari produk di dalam aplikasi web.
-5. **Keranjang (Krisna Putra Purnomo)**
+4. **Keranjang (Krisna Putra Purnomo)**
 > Keranjang adalah halaman untuk mengatur keranjang pembelian.
-6. **Testimoni (Raffi Dary Hibban)**
+5. **Testimoni (Raffi Dary Hibban)**
 > Testimoni adalah halaman untuk menyampaikan ulasan terkait produk di dalam aplikasi web.
-7. **Pengiriman (Joel Anand Garcia Sinaga)**
+6. **Pengiriman (Joel Anand Garcia Sinaga)**
 > Pengiriman adalah halaman untuk mengatur lokasi pengiriman produk yang telah dipilih pengguna.
-8. **Tips Pewaratan (Muhammad Hamid)**
+7. **Tips Pewaratan (Muhammad Hamid)**
 > Tips Pewaratan adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
 
 <hr>
