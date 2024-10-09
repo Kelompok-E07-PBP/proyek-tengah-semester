@@ -29,11 +29,11 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 > Pembayaran adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna termasuk konfirmasi pembayaran.
 4. **Keranjang (Krisna Putra Purnomo)**
 > Keranjang adalah halaman untuk mengatur keranjang pembelian.
-5. **Ulasan (Joel Anand Garcia Sinaga)**
+5. **Ulasan (Muhammad Hamid)**
 > Ulasan adalah halaman untuk menyampaikan ulasan terkait produk di dalam aplikasi web.
 6. **Pengiriman (Raffi Dary Hibban)**
 > Pengiriman adalah halaman untuk mengatur lokasi pengiriman produk yang telah dipilih pengguna.
-7. **Forum (Muhammad Hamid)**
+7. **Forum (Joel Anand Garcia Sinaga)**
 > Forum adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
 
 <hr>
