@@ -22,7 +22,7 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 
 ## Daftar Modul:
 1. **Main (Bersama)**
-> Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web. Selain itu, modul ini juga memiliki fitur login, register, dan logout.
+> Main adalah halaman utama aplikasi web yang berisi daftar produk dalam toko. Selain itu, modul ini juga memiliki fitur login, register, dan logout.
 2. **Add (Valentino Vieri Zhuo)**
 > Add adalah halaman untuk menambahkan produk di dalam toko.
 3. **Pembayaran (Dicky Bayu Sadewo)**
