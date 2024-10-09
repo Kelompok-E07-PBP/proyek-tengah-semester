@@ -23,18 +23,18 @@ Kesulitan mencari dasi di berbagai toko? Tenang, Mujur Reborn hadir untuk menjaw
 ## Daftar Modul:
 1. **Main (Bersama)**
 > Main adalah halaman utama aplikasi web yang berisi referensi ke bagian lain di aplikasi web. Selain itu, modul ini juga memiliki fitur login, register, dan logout.
-2. **Pembayaran (Valentino Vieri Zhuo)**
-> Pembayarab adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna.
-3. **Cari Produk (Dicky Bayu Sadewo)**
-> Cari Product adalah halaman untuk mencari produk di dalam aplikasi web.
+2. **Add (Valentino Vieri Zhuo)**
+> Add adalah halaman untuk menambahkan produk di dalam toko.
+3. **Pembayaran (Dicky Bayu Sadewo)**
+> Pembayaran adalah halaman untuk melihat rincian pembayaran serta metode pembayaran yang akan digunakan pengguna termasuk konfirmasi pembayaran.
 4. **Keranjang (Krisna Putra Purnomo)**
 > Keranjang adalah halaman untuk mengatur keranjang pembelian.
-5. **Testimoni (Raffi Dary Hibban)**
-> Testimoni adalah halaman untuk menyampaikan ulasan terkait produk di dalam aplikasi web.
-6. **Pengiriman (Joel Anand Garcia Sinaga)**
+5. **Ulasan (Joel Anand Garcia Sinaga)**
+> Ulasan adalah halaman untuk menyampaikan ulasan terkait produk di dalam aplikasi web.
+6. **Pengiriman (Raffi Dary Hibban)**
 > Pengiriman adalah halaman untuk mengatur lokasi pengiriman produk yang telah dipilih pengguna.
-7. **Tips Pewaratan (Muhammad Hamid)**
-> Tips Pewaratan adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
+7. **Forum (Muhammad Hamid)**
+> Forum adalah halaman untuk menyampaikan informasi terkait cara merawat produk tertentu.
 
 <hr>
 
