@@ -1,4 +1,6 @@
 import datetime
+from django.http import HttpResponse
+from django.core import serializers
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
@@ -6,12 +8,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from main.models import Product
 
 @login_required(login_url='/login')
 def show_main(request):
+    product_entries = Product.objects.all()
     context = {
         'nama_aplikasi': 'Mujur Reborn',
         'last_login': request.COOKIES['last_login'],
+        'product_entries': product_entries,
     }
 
     return render(request, "main.html", context)
@@ -27,6 +32,10 @@ def register(request):
             return redirect('main:login')
     context = {'form':form}
     return render(request, 'register.html', context)
+
+def show_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def login_user(request):
    if request.method == 'POST':
@@ -49,3 +58,4 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
