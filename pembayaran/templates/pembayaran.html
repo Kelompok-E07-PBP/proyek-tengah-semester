@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block meta %}
+<title>Pembayaran | Mujur Reborn</title>
+{% endblock meta %}
+
+{% block content %}
+<h2>Payment Details</h2>
+
+<p><strong>Product Price:</strong> {{ product.harga }} IDR</p>
+<p><strong>Delivery Fee:</strong> {{ delivery_fee }} IDR</p>
+<p><strong>Total Amount:</strong> {{ total_amount }} IDR</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="payment_method">Select Payment Method:</label>
+    {{ form.payment_method }}
+
+    <button type="submit">Submit Payment</button>
+</form>
+{% endblock content %}
+
