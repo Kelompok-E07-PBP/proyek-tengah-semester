@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.core import serializers
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,8 +10,13 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from main.models import Product
 
+
 @login_required(login_url='/login')
 def show_main(request):
+
+    if(request.user.is_superuser):
+        return redirect('edit:show_edit_main')
+
     product_entries = Product.objects.all()
     context = {
         'nama_aplikasi': 'Mujur Reborn',

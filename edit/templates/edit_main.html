@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block meta %}
+<title>Mujur Reborn Admin</title>
+{% endblock meta %}
+
 {% block content %}
 <h1>{{nama_aplikasi}}</h1>
 
@@ -33,5 +37,7 @@
 <a href="{% url 'main:logout' %}">
   <button>Logout</button>
 </a>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 
 {% endblock content %}
