@@ -1,6 +1,7 @@
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
-from django.shortcuts import render, redirect   # Tambahkan import redirect di baris ini
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from edit.forms import ProductForm
 from main.models import Product
 from django.contrib.auth.decorators import login_required
@@ -38,3 +39,19 @@ def create_product_entry(request):
 def show_json(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def edit_product_entry(request, id):
+    product_entry = Product.objects.get(pk = id)
+    form = ProductForm(request.POST or None, instance=product_entry)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('edit:show_edit_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product_entry.html", context)
+
+def delete_product_entry(request, id):
+    product_entry = Product.objects.get(pk = id)
+    product_entry.delete()
+    return HttpResponseRedirect(reverse('edit:show_edit_main'))
