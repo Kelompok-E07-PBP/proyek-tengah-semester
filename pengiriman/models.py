@@ -8,8 +8,16 @@ class Pengiriman(models.Model):
         ('GRAB', 'Grab'),
     ]
 
+    CITY_CHOICES = [
+        ('Jakarta Barat', 'Jakarta Barat'),
+        ('Jakarta Pusat', 'Jakarta Pusat'),
+        ('Jakarta Selatan', 'Jakarta Selatan'),
+        ('Jakarta Timur', 'Jakarta Timur'),
+        ('Jakarta Utara', 'Jakarta Utara'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.TextField()
-    city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=10)
+    city = models.CharField(max_length=100, choices=CITY_CHOICES)
+    postal_code = models.IntegerField()
     courier = models.CharField(max_length=100, choices=COURIER_CHOICES)
