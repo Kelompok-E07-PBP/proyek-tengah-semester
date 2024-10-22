@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'edit',
     'pengiriman',
     'pembayaran',
+    'keranjang'
 ]
 
 MIDDLEWARE = [

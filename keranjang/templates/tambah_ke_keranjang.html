@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Tambah ke Keranjang</h2>
+
+<div>
+    <h3>{{ product.nama_produk }}</h3>
+    <p>Harga: Rp {{ product.harga }}</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Tambah ke Keranjang</button>
+    </form>
+    
+    <a href="{% url 'product_list' %}">Kembali</a>
+</div>
+{% endblock %}
