@@ -7,24 +7,24 @@
 
 {% block content %}
 {% include 'user_navbar.html' %}
-<div class="container mx-auto px-4 py-8">
-    <h2 class="text-3xl font-bold mb-8 text-center" style="color: #FFAEBC">Keranjang Belanja</h2>
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#A0E7E5] flex flex-col">
+    <h2 class="text-3xl font-bold mb-8 text-center text-[#FFAEBC]">Keranjang Belanja</h2>
 
     {% if keranjang.itemkeranjang_set.all %}
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse rounded-lg overflow-hidden">
-                <thead class="text-left" style="background-color: #B4F8C8">
+        <div class="overflow-x-auto rounded-lg shadow-lg">
+            <table class="w-full border-collapse bg-white">
+                <thead class="bg-[#B4F8C8]">
                     <tr>
-                        <th class="p-4 font-semibold text-gray-800">Produk</th>
-                        <th class="p-4 font-semibold text-gray-800">Harga</th>
-                        <th class="p-4 font-semibold text-gray-800">Jumlah</th>
-                        <th class="p-4 font-semibold text-gray-800">Subtotal</th>
-                        <th class="p-4 font-semibold text-gray-800">Aksi</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Produk</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Harga</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Jumlah</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Subtotal</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in keranjang.itemkeranjang_set.all %}
-                    <tr class="border-b" style="hover:background-color: #FBE7C6">
+                    <tr class="border-b hover:bg-[#FBE7C6] transition-colors duration-200">
                         <td class="p-4">{{ item.product.nama_produk }}</td>
                         <td class="p-4">Rp {{ item.product.harga }}</td>
                         <td class="p-4">
@@ -36,14 +36,13 @@
                         <td class="p-4">Rp {{ item.get_subtotal }}</td>
                         <td class="p-4">
                             <a href="{% url 'hapus_dari_keranjang' item.id %}" 
-                               class="px-4 py-2 rounded-full text-white transition-colors duration-300"
-                               style="background-color: #FFAEBC; hover:opacity-80">
+                               class="px-4 py-2 rounded-full bg-[#FFAEBC] text-white hover:bg-opacity-80 transition-colors duration-200">
                                 Hapus
                             </a>
                         </td>
                     </tr>
                     {% endfor %}
-                    <tr style="background-color: #FBE7C6">
+                    <tr class="bg-[#FBE7C6]">
                         <td colspan="3" class="p-4 font-bold text-gray-800">Total:</td>
                         <td class="p-4 font-bold text-gray-800">Rp {{ keranjang.get_total }}</td>
                         <td></td>
@@ -54,20 +53,18 @@
         
         <div class="mt-8 flex justify-center">
             <a href="{% url 'checkout' %}" 
-               class="px-6 py-3 rounded-full text-white text-lg font-semibold transition-colors duration-300"
-               style="background-color: #FFAEBC; hover:opacity-80">
+               class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
                 Lanjut ke Pembayaran
             </a>
         </div>
     {% else %}
-        <div class="text-center py-12">
-            <p class="text-xl mb-6" style="color: #FFAEBC">Keranjang belanja Anda kosong.</p>
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <p class="text-xl mb-6 text-[#FFAEBC]">Keranjang belanja Anda kosong.</p>
             <a href="{% url 'main:show_main' %}" 
-               class="px-6 py-3 rounded-full text-white text-lg font-semibold transition-colors duration-300"
-               style="background-color: #B4F8C8; hover:opacity-80">
+               class="px-6 py-3 rounded-full bg-red-500 text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
                 Lanjut Belanja
             </a>
         </div>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock content %}
