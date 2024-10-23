@@ -19,7 +19,7 @@
             <td>
                 <form method="POST" action="{% url 'update_keranjang' item.id %}">
                     {% csrf_token %}
-                    {{ update_forms|get_item:item.id.quantity }}
+                    {{ update_forms.item.id }}
                 </form>
             </td>
             <td>Rp {{ item.get_subtotal }}</td>
@@ -38,6 +38,6 @@
     <a href="{% url 'checkout' %}">Lanjut ke Pembayaran</a>
 {% else %}
     <p>Keranjang belanja Anda kosong.</p>
-    <a href="{% url 'product_list' %}">Lanjut Belanja</a>
+    <a href="{% url 'main:show_main' %}">Lanjut Belanja</a>
 {% endif %}
 {% endblock %}
