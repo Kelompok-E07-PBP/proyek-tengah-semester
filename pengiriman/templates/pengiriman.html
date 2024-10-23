@@ -4,10 +4,14 @@
 {% endblock meta %}
 
 {% block content %}
-<h1>Pengiriman</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}  
-    <button type="submit">Submit</button>
-</form>
+
+<div class="flex flex-col items-center justify-center h-screen">
+    <h1 class="text-sm font-medium rounded-md text-black">Pengiriman</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  
+        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-[#FFAEBC] hover:bg-[#FBE7C6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFAEBC] mt-4">Submit</button>
+    </form>
+</div>
+
 {% endblock content %}
