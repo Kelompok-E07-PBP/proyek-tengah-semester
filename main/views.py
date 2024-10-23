@@ -13,6 +13,12 @@ from main.models import Product
 
 @login_required(login_url='/login')
 def show_main(request):
+    cookie = request.COOKIES.get('last_login')
+
+    if cookie:
+        last_login = datetime.datetime.strptime(cookie, "%Y-%m-%d %H:%M:%S.%f")
+    else:
+        return redirect('main:login')
 
     if(request.user.is_superuser):
         return redirect('edit:show_edit_main')
@@ -20,7 +26,7 @@ def show_main(request):
     product_entries = Product.objects.all()
     context = {
         'nama_aplikasi': 'Mujur Reborn',
-        'last_login': request.COOKIES['last_login'],
+        'last_login': last_login,
         'product_entries': product_entries,
     }
 
