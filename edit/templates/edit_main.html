@@ -34,7 +34,7 @@
     {% else %}
     <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
         {% for product_entry in product_entries %}
-            {% include 'card_product.html' with product_entry=product_entry %}
+            {% include 'edit_card_product.html' with product_entry=product_entry %}
         {% endfor %}
     </div>
     {% endif %}
