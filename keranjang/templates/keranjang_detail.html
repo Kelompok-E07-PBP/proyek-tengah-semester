@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Keranjang Belanja</h2>
+
+{% if keranjang.itemkeranjang_set.all %}
+    <table>
+        <tr>
+            <th>Produk</th>
+            <th>Harga</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+            <th>Aksi</th>
+        </tr>
+        {% for item in keranjang.itemkeranjang_set.all %}
+        <tr>
+            <td>{{ item.product.nama_produk }}</td>
+            <td>Rp {{ item.product.harga }}</td>
+            <td>
+                <form method="POST" action="{% url 'update_keranjang' item.id %}">
+                    {% csrf_token %}
+                    {{ update_forms|get_item:item.id.quantity }}
+                </form>
+            </td>
+            <td>Rp {{ item.get_subtotal }}</td>
+            <td>
+                <a href="{% url 'hapus_dari_keranjang' item.id %}">Hapus</a>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3">Total:</td>
+            <td>Rp {{ keranjang.get_total }}</td>
+            <td></td>
+        </tr>
+    </table>
+    
+    <a href="{% url 'checkout' %}">Lanjut ke Pembayaran</a>
+{% else %}
+    <p>Keranjang belanja Anda kosong.</p>
+    <a href="{% url 'product_list' %}">Lanjut Belanja</a>
+{% endif %}
+{% endblock %}
