@@ -24,4 +24,5 @@ urlpatterns = [
     path('pengiriman/', include('pengiriman.urls')),
     path('pembayaran/', include('pembayaran.urls')),
     path('keranjang/', include('keranjang.urls')),
+    path('ulasan/', include('ulasan.urls')),
 ]
