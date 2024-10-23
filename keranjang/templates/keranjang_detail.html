@@ -1,43 +1,70 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Mujur Reborn</title>
+{% endblock meta %}
 
 {% block content %}
-<h2>Keranjang Belanja</h2>
+{% include 'user_navbar.html' %}
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#A0E7E5] flex flex-col">
+    <h2 class="text-3xl font-bold mb-8 text-center text-[#FFAEBC]">Keranjang Belanja</h2>
 
-{% if keranjang.itemkeranjang_set.all %}
-    <table>
-        <tr>
-            <th>Produk</th>
-            <th>Harga</th>
-            <th>Jumlah</th>
-            <th>Subtotal</th>
-            <th>Aksi</th>
-        </tr>
-        {% for item in keranjang.itemkeranjang_set.all %}
-        <tr>
-            <td>{{ item.product.nama_produk }}</td>
-            <td>Rp {{ item.product.harga }}</td>
-            <td>
-                <form method="POST" action="{% url 'update_keranjang' item.id %}">
-                    {% csrf_token %}
-                    {{ update_forms.item.id }}
-                </form>
-            </td>
-            <td>Rp {{ item.get_subtotal }}</td>
-            <td>
-                <a href="{% url 'hapus_dari_keranjang' item.id %}">Hapus</a>
-            </td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td colspan="3">Total:</td>
-            <td>Rp {{ keranjang.get_total }}</td>
-            <td></td>
-        </tr>
-    </table>
-    
-    <a href="{% url 'checkout' %}">Lanjut ke Pembayaran</a>
-{% else %}
-    <p>Keranjang belanja Anda kosong.</p>
-    <a href="{% url 'main:show_main' %}">Lanjut Belanja</a>
-{% endif %}
-{% endblock %}
+    {% if keranjang.itemkeranjang_set.all %}
+        <div class="overflow-x-auto rounded-lg shadow-lg">
+            <table class="w-full border-collapse bg-white">
+                <thead class="bg-[#B4F8C8]">
+                    <tr>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Produk</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Harga</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Jumlah</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Subtotal</th>
+                        <th class="p-4 font-semibold text-gray-800 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in keranjang.itemkeranjang_set.all %}
+                    <tr class="border-b hover:bg-[#FBE7C6] transition-colors duration-200">
+                        <td class="p-4">{{ item.product.nama_produk }}</td>
+                        <td class="p-4">Rp {{ item.product.harga }}</td>
+                        <td class="p-4">
+                            <form method="POST" action="{% url 'update_keranjang' item.id %}" class="flex items-center">
+                                {% csrf_token %}
+                                {{ update_forms.item.id }}
+                            </form>
+                        </td>
+                        <td class="p-4">Rp {{ item.get_subtotal }}</td>
+                        <td class="p-4">
+                            <a href="{% url 'hapus_dari_keranjang' item.id %}" 
+                               class="px-4 py-2 rounded-full bg-[#FFAEBC] text-white hover:bg-opacity-80 transition-colors duration-200">
+                                Hapus
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="bg-[#FBE7C6]">
+                        <td colspan="3" class="p-4 font-bold text-gray-800">Total:</td>
+                        <td class="p-4 font-bold text-gray-800">Rp {{ keranjang.get_total }}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-8 flex justify-center">
+            <a href="{% url 'checkout' %}" 
+               class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
+                Lanjut ke Pembayaran
+            </a>
+        </div>
+    {% else %}
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <p class="text-xl mb-6 text-[#FFAEBC]">Keranjang belanja Anda kosong.</p>
+            <a href="{% url 'main:show_main' %}" 
+               class="px-6 py-3 rounded-full bg-red-500 text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
+                Lanjut Belanja
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}
