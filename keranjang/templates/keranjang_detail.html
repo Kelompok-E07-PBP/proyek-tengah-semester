@@ -7,11 +7,18 @@
 
 {% block content %}
 {% include 'user_navbar.html' %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#A0E7E5] flex flex-col">
-    <h2 class="text-3xl font-bold mb-8 text-center text-[#FFAEBC]">Keranjang Belanja</h2>
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
+    <!-- Decorative line for mobile -->
+    <div class="p-2 mb-6 relative">
+        <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex">
+            <div class="h-full min-w-4 bg-[#FFAEBC] mx-auto"></div>
+        </div>
+    </div>
+
+    <h2 class="text-3xl font-bold mb-8 text-center text-black">Keranjang Belanja</h2>
 
     {% if keranjang.itemkeranjang_set.all %}
-        <div class="overflow-x-auto rounded-lg shadow-lg">
+        <div class="overflow-x-auto rounded-lg shadow-lg mb-8">
             <table class="w-full border-collapse bg-white">
                 <thead class="bg-[#B4F8C8]">
                     <tr>
@@ -51,7 +58,7 @@
             </table>
         </div>
         
-        <div class="mt-8 flex justify-center">
+        <div class="flex justify-center">
             <a href="{% url 'checkout' %}" 
                class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
                 Lanjut ke Pembayaran
@@ -59,9 +66,10 @@
         </div>
     {% else %}
         <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-            <p class="text-xl mb-6 text-[#FFAEBC]">Keranjang belanja Anda kosong.</p>
+            <img src="{% static 'image/keranjang_kosong.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
+            <p class="text-center text-gray-600 mt-4">Keranjang belanja Anda kosong.</p>
             <a href="{% url 'main:show_main' %}" 
-               class="px-6 py-3 rounded-full bg-red-500 text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
+               class="mt-6 px-6 py-3 rounded-full bg-[#03d9ff] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
                 Lanjut Belanja
             </a>
         </div>

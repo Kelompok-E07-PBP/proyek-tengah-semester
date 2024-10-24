@@ -6,20 +6,22 @@
 {% endblock meta %}
 {% block content %}
 {% include 'user_navbar.html' %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#A0E7E5] flex flex-col">
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
   <div class="p-2 mb-6 relative">
     <div class="h-full w-full py-6  absolute top-0 left-0 z-20 md:hidden flex ">
       <div class="h-full min-w-4 bg-[#FFAEBC] mx-auto">
       </div>
     </div>
-</div>
+  </div>
+  
     <div class="flex flex-row justify-between items-center">
-      <div class="">
-        <div class="flex rounded-md items-center bg-[#FFAEBC] py-2 px-4 w-fit">
-          <h1 class="text-black text-center">Last Login: {{last_login}}</h1>
+      <div class="absolute bottom-4 right-4">
+        <div class="flex rounded-md items-center bg-[#444445] py-1 px-2 w-fit opacity-80">
+          <h1 class="text-white text-center text-sm">Last Login at: {{last_login}}</h1>
         </div>
       </div>
     </div>
+
     
     {% if not product_entries %}
     <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
