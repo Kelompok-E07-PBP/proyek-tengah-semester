@@ -8,21 +8,32 @@
 
 {% block content %}
 {% include 'admin_navbar.html' %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-20 min-h-screen flex-col">
+<div class="overflow-x-hidden px-4 md:px-8 pb-24 pt-20 min-h-screen flex-col">
   <div class="absolute inset-0 bg-gray-50">
     <div class="absolute inset-0 opacity-[0.2]" 
-      style="background-image: linear-gradient(#444445 1px, transparent 1px), linear-gradient(to right, #444445 1px, transparent 1px);
-      background-size: 50px 50px;">
+      style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), 
+      linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px);
+      background-size: 100px 100px;">
     </div>
   </div>
 
-  <div class="absolute inset-0 bg-gradient-to-b from-white/80 to-transparent"></div>
 
-  <div class="absolute right-0 top-0 w-96 h-96 bg-[#03d9ff]/5 rounded-full filter blur-3xl animate-pulse" 
-    style="animation-duration: 10s;">
-  </div>
-  <div class="absolute left-0 bottom-0 w-96 h-96 bg-[#FFAEBC]/5 rounded-full filter blur-3xl animate-pulse"
-    style="animation-duration: 15s;">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Top Right Blob -->
+    <div class="absolute -right-32 -top-32 w-[40rem] h-[40rem]">
+      <div class="absolute inset-0 bg-[#03d9ff]/20 rounded-full filter blur-3xl animate-pulse-background"
+        style="animation: pulse-background 6s infinite cubic-bezier(0.4, 0, 0.6, 1);">
+      </div>
+    </div>
+    
+    <!-- Bottom Left Blob -->
+    <div class="absolute -left-32 -bottom-32 w-[40rem] h-[40rem]">
+      <div class="absolute inset-0 bg-[#FFAEBC]/25 rounded-full filter blur-3xl animate-pulse-background"
+        style="animation: pulse-background 6s infinite cubic-bezier(0.4, 0, 0.6, 1);">
+      </div>
+    </div>
+    
+    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#03d9ff]/5 to-[#FFAEBC]/5 mix-blend-overlay"></div>
   </div>
 
   <div class="flex flex-row justify-between items-center mb-6">
@@ -193,7 +204,7 @@
       </div>
     </div>
   </div>
-  <footer class="mt-auto py-6 bg-gray-100 border-t">
+  <footer class="absolute bottom-0 left-0 w-full py-6 bg-gray-100 border-t z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <div class="flex items-center space-x-2">
@@ -271,37 +282,67 @@
             const nama_produk = DOMPurify.sanitize(item.fields.nama_produk)
             const kategori = DOMPurify.sanitize(item.fields.kategori)
             htmlString += `
-            <div class="relative break-inside-avoid">
-              <div class="relative top-5 bg-[#FBE7C6] shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col transform transition-transform duration-300">
-                <div class="bg-[#FFAEBC] text-gray-800 p-4 rounded-t-lg border-b-2 border-[#FFAEBC]">
-                  <h3 class="font-bold text-xl mb-2">${nama_produk}</h3>
+            <div class="card fade-in relative break-inside-avoid">
+                <div class="product-card relative bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="card-header animated-gradient p-4">
+                        <h3 class="product-name text-xl font-bold text-white mb-2">${nama_produk}</h3>
+                        <span class="price-tag inline-block bg-white/90 backdrop-blur-sm text-blue-600 px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
+                            Rp${item.fields.harga}
+                        </span>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <p class="font-semibold text-gray-700 mb-1">Kategori</p>
+                            <span class="text-gray-600">${kategori}</span>
+                        </div>
+                        
+                        <div class="product-image-container mb-4">
+                            <img src="${item.fields.gambar_produk}" 
+                                alt="Gambar ${nama_produk}"
+                                class="w-full h-48 object-cover rounded-lg shadow-sm">
+                        </div>
+
+                        <div class="action-buttons flex space-x-2">
+                            <a href="edit-product-entry/${item.pk}" 
+                              class="btn btn-edit flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-5 w-5 mr-2" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" 
+                                          stroke-linejoin="round" 
+                                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                                Edit
+                            </a>
+                            <a href="delete/${item.pk}" 
+                              class="btn btn-delete flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-5 w-5 mr-2" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" 
+                                          stroke-linejoin="round" 
+                                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Decorative floating icons -->
+                    <svg class="floating-icon icon-1 absolute top-12 right-4 w-6 h-6 text-purple-200 opacity-50" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                    </svg>
+                    <svg class="floating-icon icon-2 absolute top-2 left-2 w-6 h-6 text-blue-200 opacity-50" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
                 </div>
-                <div class="p-4">
-                  <p class="font-semibold text-lg mb-2">Kategori</p> 
-                  <p class="text-gray-700 mb-2">
-                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${kategori}</span>
-                  </p>
-                  <div class="mt-4">
-                    <p class="font-semibold text-lg mb-2">Harga</p> 
-                    <p class="text-gray-700 mb-2">
-                      <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">Rp${item.fields.harga}</span>
-                    </p>
-                    <img src="${item.fields.gambar_produk}" alt="Gambar ${nama_produk}">
-                  </div>
-                </div>
-              </div>
-              <div class="absolute top-0 -right-4 flex space-x-1">
-                <a href="edit-product-entry/${item.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                  </svg>
-                </a>
-                <a href="delete/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </a>
-              </div>
             </div>
             `;
         });
