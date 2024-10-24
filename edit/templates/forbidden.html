@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
-{% block meta %}
-<title>Page Not Found</title>
-{% endblock meta %}
+{% load static %}
 
+{% block meta %}
+<title>Mujur Reborn Admin</title>
+{% endblock meta %}
 {% block content %}
-<h1>Maaf, halaman ini tidak ditemukan.</h1>
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col justify-center items-center">
+  <h1 class="text-center">Maaf, halaman ini tidak ditemukan.</h1>
+  <a href="{% url 'main:show_main' %}" class="text-center">Kembali ke Home</a>
+</div>
 {% endblock content %}
