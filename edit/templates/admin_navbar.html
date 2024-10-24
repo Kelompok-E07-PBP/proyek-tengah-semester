@@ -1,20 +1,20 @@
-<nav class="bg-[#B4F8C8] shadow-lg fixed top-0 left-0 z-40 w-screen">
+{% load static %}
+
+<nav class="bg-[#444445] shadow-lg fixed top-0 left-0 z-40 w-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
+          <img src="{% static 'image/logo.png' %}" alt="Mujur Logo" class="h-10 w-auto mr-2 rounded-full shadow-md transition-transform duration-300 hover:scale-110" />
           <a href="{% url 'edit:show_edit_main' %}" 
-          class="text-2xl font-bold text-center text-black">Mujur Reborn Admin</a>
-        </div>
-        <div class="hidden md:flex items-center">
-          <a href="{%url 'edit:create_product_entry' %}"
-            class="text-center text-black font-bold py-2 px-4 rounded transition">
-            Tambahkan Produk
-          </a>
+          class="text-2xl font-bold text-center text-white">Mujur Reborn Admin</a>
         </div>
         <div class="hidden md:flex items-center">
           {% if user.is_authenticated %}
-            <span class="text-black mr-4">Selamat datang, {{ user.username }}</span>
-            <a href="{% url 'main:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+            <span class="text-center text-white hover:bg-gray-800 font-bold py-2 px-4 rounded transition">Selamat datang, {{ user.username }}</span>
+            <a href="{% url 'main:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-lg flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+              </svg>
               Logout
             </a>
           {% else %}
@@ -36,21 +36,29 @@
       </div>
     </div>
     <!-- Mobile menu -->
-    <div class="mobile-menu hidden md:hidden  px-4 w-full md:max-w-full">
-      <div class="pt-2 pb-3 space-y-1 mx-auto">
-        {% if user.is_authenticated %}
-          <span class="block text-gray-300 px-3 py-2">Selamat datang, {{ user.username }}</span>
-          <a href="{% url 'main:logout' %}" class="block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-            Logout
-          </a>
-        {% else %}
-          <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
-            Login
-          </a>
-          <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-            Register
-          </a>
-        {% endif %}
+    <div class="mobile-menu hidden md:hidden bg-[#444445] px-4 pb-4 w-full">
+      <div class="space-y-3">
+        <!-- Admin Navigation Links -->
+
+        <!-- Authentication Section -->
+        <div class="pt-2 border-t border-gray-700">
+          {% if user.is_authenticated %}
+            <div class="text-white px-4 py-2 font-bold">Selamat datang, {{ user.username }}</div>
+            <a href="{% url 'main:logout' %}" class="flex items-center gap-2 text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-4 rounded transition w-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+              </svg>
+              Logout
+            </a>
+          {% else %}
+            <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition w-full mb-2">
+              Login
+            </a>
+            <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition w-full">
+              Register
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
     <script>
@@ -61,4 +69,4 @@
         menu.classList.toggle("hidden");
       });
     </script>
-  </nav>
+</nav>
