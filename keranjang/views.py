@@ -4,6 +4,10 @@ from django.contrib import messages
 from .models import Keranjang, ItemKeranjang
 from .forms import TambahKeKeranjangForm, UpdateItemKeranjangForm
 from main.models import Product
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import logging
+import uuid
 
 @login_required
 def keranjang_detail(request):
@@ -55,12 +59,16 @@ def update_keranjang(request, item_id):
     item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
     
     if request.method == 'POST':
-        form = UpdateItemKeranjangForm(request.POST, instance=item_keranjang)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Keranjang berhasil diperbarui")
-        else:
-            messages.error(request, "Gagal memperbarui keranjang")
+        try:
+            new_quantity = int(request.POST.get('quantity', 1))
+            if new_quantity > 0:
+                item_keranjang.quantity = new_quantity
+                item_keranjang.save()
+                messages.success(request, "Keranjang berhasil diperbarui")
+            else:
+                messages.error(request, "Jumlah harus lebih dari 0")
+        except (ValueError, TypeError):
+            messages.error(request, "Jumlah tidak valid")
     
     return redirect('keranjang_detail')
 
@@ -79,3 +87,60 @@ def checkout(request):
         return redirect('keranjang_detail')
     
     return redirect('payment_page')
+
+logger = logging.getLogger(__name__)
+
+@login_required
+@require_POST
+def tambah_ke_keranjang_ajax(request, product_id):
+    try:
+        # Convert string UUID to UUID object
+        product_uuid = uuid.UUID(product_id)
+        
+        # Get the product using the UUID
+        product = get_object_or_404(Product, id=product_uuid)
+        keranjang, created = Keranjang.objects.get_or_create(user=request.user)
+        
+        # Get quantity from POST data
+        try:
+            quantity = int(request.POST.get('quantity', 1))
+        except ValueError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Jumlah produk tidak valid'
+            }, status=400)
+        
+        if quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'message': 'Quantity harus lebih dari 0'
+            }, status=400)
+            
+        item_keranjang, created = ItemKeranjang.objects.get_or_create(
+            keranjang=keranjang,
+            product=product,
+            defaults={'quantity': quantity}
+        )
+        
+        if not created:
+            item_keranjang.quantity += quantity
+            item_keranjang.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': f"{product.nama_produk} berhasil ditambahkan ke keranjang",
+            'cart_count': keranjang.itemkeranjang_set.count()
+        })
+        
+    except ValueError as e:
+        # Invalid UUID format
+        return JsonResponse({
+            'success': False,
+            'message': 'ID produk tidak valid'
+        }, status=400)
+    except Exception as e:
+        print(f"Error: {str(e)}")  # For debugging
+        return JsonResponse({
+            'success': False,
+            'message': 'Gagal menambahkan produk ke keranjang'
+        }, status=400)

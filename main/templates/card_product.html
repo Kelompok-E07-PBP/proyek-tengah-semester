@@ -18,10 +18,11 @@
     </div>
   </div>
   <div class="absolute top-0 -right-4 flex space-x-1">
-    <a class="bg-green-600 hover:bg-green-500 text-white rounded-full p-2 transition duration-300 shadow-md">
+    <button onclick="openModal('{{ product_entry.id }}', '{{ product_entry.nama_produk }}', '{{ product_entry.harga }}')"
+     class="bg-green-600 hover:bg-green-500 text-white rounded-full p-2 transition duration-300 shadow-md">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
         <path d="M10 3a1 1 0 011 1v6h6a1 1 0 110 2h-6v6a1 1 0 01-2 0v-6H3a1 1 0 110-2h6V4a1 1 0 011-1z" />
       </svg>
-    </a>
+    </button>
   </div>
 </div>
