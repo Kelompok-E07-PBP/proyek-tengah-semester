@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulasan</title>
+    <link rel="stylesheet" href="{% static 'ulasan_app/global.css' %}">
+    <style>
+        /* Tambahkan styling dasar di sini */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #reviewList div {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .new-review-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .new-review-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ulasan</h1>
+    <!-- Button "Buat Ulasan Baru" -->
+    <a href="{% url 'create_ulasan' %}" class="new-review-btn">Buat Ulasan Baru</a>
+    
+    <div id="reviewList">
+        {% for review in reviews %}
+            <div>
+                <h3>{{ review.product_name }}</h3>
+                <p><strong>User:</strong> {{ review.user.username }}</p>
+                <p><strong>Rating:</strong> {{ review.rating }}</p>
+                <p><strong>Review:</strong> {{ review.review_text }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
