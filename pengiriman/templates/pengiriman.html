@@ -4,14 +4,105 @@
 {% endblock meta %}
 
 {% block content %}
+{% include 'user_navbar.html' %}
 
-<div class="flex flex-col items-center justify-center h-screen">
-    <h1 class="text-sm font-medium rounded-md text-black">Pengiriman</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}  
-        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-[#FFAEBC] hover:bg-[#FBE7C6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFAEBC] mt-4">Submit</button>
+<div class="relative min-h-screen overflow-x-hidden bg-gray-100 flex flex-col items-center justify-center pt-24 px-4 md:px-8 pb-8">
+  <div class="absolute inset-0 bg-gray-50 z-0">
+    <div class="absolute inset-0 opacity-[0.4]" style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px); background-size: 100px 100px;"></div>
+  </div>
+  
+  <div class="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg fade-in z-10">
+    <h1 class="text-4xl text-grey-800 font-extrabold text-center mb-6 drop-shadow-md">Pengiriman</h1>
+
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Contact Details -->
+      <h2 class="text-xl font-medium mb-4">Rincian Kontak</h2>
+
+      <!-- First Name -->
+      <div class="mb-5">
+        <label for="id_first_name" class="block text-gray-700 font-semibold mb-2">Nama Depan</label>
+        <div class="relative">
+          <input type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" class="w-full border border-gray-300 rounded-md p-2" placeholder="Nama Depan">
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="mb-5">
+        <label for="id_last_name" class="block text-gray-700 font-semibold mb-2">Nama Belakang</label>
+        <div class="relative">
+          <input type="text" id="id_last_name" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" class="w-full border border-gray-300 rounded-md p-2" placeholder="Nama Belakang">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-5">
+        <label for="id_email" class="block text-gray-700 font-semibold mb-2">Email</label>
+        <div class="relative">
+          <input type="email" id="id_email" name="email" value="{{ form.email.value|default_if_none:'' }}" class="w-full border border-gray-300 rounded-md p-2" placeholder="Email">
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="mb-5">
+        <label for="id_phone_number" class="block text-gray-700 font-semibold mb-2">Nomor Telepon</label>
+        <div class="flex">
+          <div class="relative">
+            <input type="text" value="+62" disabled class="pl-4 pr-2 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-gray-600">
+          </div>
+          <div class="relative flex-grow">
+            <input type="text" id="id_phone_number" name="phone_number" value="{{ form.phone_number.value|default_if_none:'' }}" class="w-full border border-gray-300 rounded-r-md p-2" placeholder="Nomor Telepon">
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Details -->
+      <h2 class="text-xl font-medium mt-8 mb-4">Rincian Pengiriman</h2>
+
+      <!-- Address -->
+      <div class="mb-5">
+        <label for="id_address" class="block text-gray-700 font-semibold mb-2">Alamat</label>
+        <div class="relative">
+          <textarea id="id_address" name="address" class="w-full border border-gray-300 rounded-md p-2" placeholder="Alamat">{{ form.address.value|default_if_none:'' }}</textarea>
+        </div>
+      </div>
+
+      <!-- City -->
+      <div class="mb-5">
+        <label for="id_city" class="block text-gray-700 font-semibold mb-2">Kota</label>
+        <select id="id_city" name="city" class="w-full border border-gray-300 rounded-md p-2 focus:border-[#03d9ff] focus:ring-2 focus:ring-[#03d9ff] focus:outline-none">
+          {% for key, value in form.city.field.choices %}
+            <option value="{{ key }}" {% if form.city.value == key %}selected{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Postal Code -->
+      <div class="mb-5">
+        <label for="id_postal_code" class="block text-gray-700 font-semibold mb-2">Kode Pos</label>
+        <div class="relative">
+          <input type="text" id="id_postal_code" name="postal_code" value="{{ form.postal_code.value|default_if_none:'' }}" class="w-full border border-gray-300 rounded-md p-2" placeholder="Kode Pos">
+        </div>
+      </div>
+
+      <!-- Courier Selection -->
+      <div class="mb-5">
+        <label for="id_courier" class="block text-gray-700 font-semibold mb-2">Kurir</label>
+        <select id="id_courier" name="courier" class="w-full border border-gray-300 rounded-md p-2 focus:border-[#03d9ff] focus:ring-2 focus:ring-[#03d9ff] focus:outline-none">
+          {% for key, value in form.courier.field.choices %}
+            <option value="{{ key }}" {% if form.courier.value == key %}selected{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-8">
+        <button type="submit" class="w-full py-3 bg-[#03d9ff] text-black font-bold rounded-lg hover:bg-[#039aff] transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-orange-300">
+          Lanjut Pembayaran
+        </button>
+      </div>
     </form>
+  </div>
 </div>
-
 {% endblock content %}

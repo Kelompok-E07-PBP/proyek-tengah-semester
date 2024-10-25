@@ -34,7 +34,9 @@
                 required
               />
               {% if field.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ field.errors.0 }}</p>
+              <div class="mt-4 text-yellow-700 bg-yellow-100 border border-yellow-400 px-4 py-2 rounded" role="alert">
+                  <span class="block sm:inline">{{ field.errors.0 }}</span>
+              </div>
               {% endif %}
             </div>
           {% endfor %}
@@ -46,24 +48,7 @@
           </button>
         </div>
       </form>
-
-      {% if messages %}
-      <div class="mt-4">
-        {% for message in messages %}
-          {% if message.tags == "success" %}
-          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-            <span class="block sm:inline">{{ message }}</span>
-          </div>
-          {% else %}
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span class="block sm:inline">{{ message }}</span>
-          </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
       
-
       <p class="text-center text-white text-sm">
         Already have an account?
         <a href="{% url 'main:login' %}" class="text-[#03d9ff] font-medium">

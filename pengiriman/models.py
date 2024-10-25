@@ -17,6 +17,10 @@ class Pengiriman(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone_number = models.IntegerField()
     address = models.TextField()
     city = models.CharField(max_length=100, choices=CITY_CHOICES)
     postal_code = models.IntegerField()

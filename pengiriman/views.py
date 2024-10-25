@@ -1,3 +1,4 @@
+# pengiriman/views.py
 from django.shortcuts import render, redirect
 from pengiriman.models import Pengiriman
 from pengiriman.forms import PengirimanForm
@@ -5,18 +6,19 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse
 
-@login_required
-def pengiriman_view(request):
+@login_required(login_url='/login')
+def pengiriman_view(request, product_id):  
     if request.method == 'POST':
         form = PengirimanForm(request.POST)
         if form.is_valid():
             pengiriman = form.save(commit=False)
             pengiriman.user = request.user
             pengiriman.save()
-            return redirect('/') #Still in development 
+            return redirect('pembayaran:pembayaran_view', product_id=product_id)
     else:
         form = PengirimanForm()
-    return render(request, 'pengiriman.html', {'form': form})
+    
+    return render(request, 'pengiriman.html', {'form': form, 'product_id': product_id})  
 
 def show_json(request):
     data = Pengiriman.objects.all()
