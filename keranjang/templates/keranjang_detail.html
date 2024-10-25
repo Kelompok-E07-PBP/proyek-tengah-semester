@@ -35,9 +35,17 @@
                         <td class="p-4">{{ item.product.nama_produk }}</td>
                         <td class="p-4">Rp {{ item.product.harga }}</td>
                         <td class="p-4">
-                            <form method="POST" action="{% url 'update_keranjang' item.id %}" class="flex items-center">
+                            <form method="POST" action="{% url 'update_keranjang' item.id %}" class="flex items-center space-x-2">
                                 {% csrf_token %}
-                                {{ update_forms.item.id }}
+                                <input type="number" 
+                                       name="quantity" 
+                                       value="{{ item.quantity }}"
+                                       min="1" 
+                                       class="w-20 px-2 py-1 border rounded">
+                                <button type="submit" 
+                                        class="px-3 py-1 rounded bg-[#B4F8C8] text-gray-800 hover:bg-opacity-80 transition-colors duration-200">
+                                    Update
+                                </button>
                             </form>
                         </td>
                         <td class="p-4">Rp {{ item.get_subtotal }}</td>
