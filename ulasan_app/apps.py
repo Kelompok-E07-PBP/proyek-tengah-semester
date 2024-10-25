@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class UlasanConfig(AppConfig):
+class UlasanAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ulasan'
+    name = 'ulasan_app'

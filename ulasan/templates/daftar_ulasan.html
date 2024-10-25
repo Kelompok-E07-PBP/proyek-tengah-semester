@@ -1,7 +1,0 @@
-<h1>Daftar Ulasan</h1>
-<ul>
-    {% for ulasan in ulasan %}
-        <li><strong>{{ ulasan.nama_pengguna }}</strong> memberi rating {{ ulasan.rating }}: {{ ulasan.komentar }}</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'tambah_ulasan' %}">Tambah Ulasan</a>
