@@ -6,36 +6,53 @@
 
 {% block content %}
 {% include 'admin_navbar.html' %}
-<div class="flex flex-col min-h-screen bg-[#A0E7E5]">
-  <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-    <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Produk</h1>
-  
-    <div class="bg-[#B4F8C8] rounded-lg p-6 form-style">
-      <form method="POST" class="space-y-6">
-          {% csrf_token %}
-          {% for field in form %}
-              <div class="flex flex-col">
-                  <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
-                      {{ field.label }}
-                  </label>
-                  <div class="w-full">
-                      {{ field }}
-                  </div>
-                  {% if field.help_text %}
-                      <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-                  {% endif %}
-                  {% for error in field.errors %}
-                      <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                  {% endfor %}
-              </div>
-          {% endfor %}
-          <div class="flex justify-center mt-6">
-              <button type="submit" class="bg-[#FFAEBC] text-black font-semibold px-6 py-3 rounded-lg hover:bg-[#FBE7C6] transition duration-300 ease-in-out w-full">
-                  Edit Produk
-              </button>
-          </div>
-      </form>
+
+<div class="relative min-h-screen overflow-x-hidden bg-gray-100 flex flex-col items-center justify-center pt-24 px-4 md:px-8 pb-8">
+  <div class="absolute inset-0 bg-gray-50 z-0">
+    <div class="absolute inset-0 opacity-[0.4]" style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px); background-size: 100px 100px;"></div>
   </div>
+  <div class="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg fade-in z-10">
+    <h1 class="text-4xl text-grey-800 font-extrabold text-center mb-6 drop-shadow-md">Edit Produk</h1>
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-5">
+          <label for="{{ field.id_for_label }}" class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
+          <div class="relative">
+            {% if field.field.widget.input_type == 'checkbox' %}
+              <div class="flex items-center">
+                <input type="checkbox" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-checkbox h-6 w-6 text-orange-600 border-gray-300 rounded focus:ring-orange-500" {% if field.value %} checked {% endif %}>
+                <span class="ml-2 text-gray-700">Add your item into Featured List!</span>
+              </div>
+            {% else %}
+              <input type="{{ field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" class="w-full border border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-300 rounded-md p-2" placeholder="Enter {{ field.label|lower }}" value="{{ field.value|default_if_none:'' }}">
+            {% endif %}
+          </div>
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endfor %}
+      <div class="mt-8">
+        <button type="submit" class="w-full py-3 bg-[#03d9ff] text-white font-bold rounded-lg hover:bg-[#039aff] transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-orange-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Edit Produk
+        </button>
+      </div>
+    </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const formInputs = document.querySelectorAll('form input, form textarea, form select');
+    formInputs.forEach(input => {
+      input.classList.add('form-input');
+    });
+  });
+</script>
 {% endblock %}
