@@ -4,18 +4,48 @@
 {% endblock meta %}
 
 {% block content %}
-<h2>Payment Details</h2>
+<h1>Checkout</h1>
 
-<p><strong>Product Price:</strong> {{ product.harga }} IDR</p>
-<p><strong>Delivery Fee:</strong> {{ delivery_fee }} IDR</p>
-<p><strong>Total Amount:</strong> {{ total_amount }} IDR</p>
+<table>
+    <thead>
+        <tr>
+            <th>Produk</th>
+            <th>Harga Satuan</th>
+            <th>Jumlah</th>
+            <th>Subtotal Harga</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in keranjang_items %}
+        <tr>
+            <td>{{ item.product.nama_produk }}</td>
+            <td>{{ item.product.harga }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.get_subtotal }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3">Total Harga:</td>
+            <td>{{ total_harga }} IDR</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Address Input (if needed, or you can remove this) -->
 
 <form method="POST">
     {% csrf_token %}
-    <label for="payment_method">Select Payment Method:</label>
-    {{ form.payment_method }}
+    
+    <!-- Payment Method Radio Buttons -->
+    <h3>Metode Pembayaran:</h3>
+    {% for method in payment_methods %}
+    <div>
+        <input type="radio" id="payment_method_{{ method.id }}" name="payment_method" value="{{ method.id }}" {% if method.id == selected_payment_method %}checked{% endif %}>
+        <label for="payment_method_{{ method.id }}">{{ method.get_name_display }}</label>
+    </div>
+    {% endfor %}
 
-    <button type="submit">Submit Payment</button>
+    <button type="submit">Bayar</button>
 </form>
-{% endblock content %}
 
+{% endblock %}
