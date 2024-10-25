@@ -41,6 +41,8 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
+        else:
+            messages.error(request, 'There was an error with your registration. Please try again.', extra_tags='register_error')
     context = {'form':form}
     return render(request, 'register.html', context)
 
@@ -59,7 +61,7 @@ def login_user(request):
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
-            messages.error(request, "Invalid username or password. Please try again.")
+            messages.error(request, "Invalid username or password. Please try again.", extra_tags='login_error')
 
    else:
       form = AuthenticationForm(request)
