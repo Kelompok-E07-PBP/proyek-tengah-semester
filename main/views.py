@@ -74,3 +74,5 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+def forbidden_view_main(request):
+    return render(request, 'forbidden_main.html')

@@ -29,7 +29,6 @@ DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "valentino-vieri-mujurreborn.pbp.cs.ui.ac.id"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
     'pengiriman',
     'pembayaran',
     'keranjang',
-    'ulasan_app',
+    'ulasan',
 ]
 
 MIDDLEWARE = [
@@ -114,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 

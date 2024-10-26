@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 import logging
 import uuid
 
-@login_required
+@login_required(login_url='/login')
 def keranjang_detail(request):
     keranjang, created = Keranjang.objects.get_or_create(user=request.user)
     items = keranjang.itemkeranjang_set.all()
@@ -23,7 +23,7 @@ def keranjang_detail(request):
     }
     return render(request, 'keranjang_detail.html', context)  
 
-@login_required
+@login_required(login_url='/login')
 def tambah_ke_keranjang(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     keranjang, created = Keranjang.objects.get_or_create(user=request.user)
@@ -54,7 +54,7 @@ def tambah_ke_keranjang(request, product_id):
     }
     return render(request, 'tambah_ke_keranjang.html', context)  
 
-@login_required
+@login_required(login_url='/login')
 def update_keranjang(request, item_id):
     item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
     
@@ -72,14 +72,14 @@ def update_keranjang(request, item_id):
     
     return redirect('keranjang_detail')
 
-@login_required
+@login_required(login_url='/login')
 def hapus_dari_keranjang(request, item_id):
     item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
     item_keranjang.delete()
     messages.success(request, "Item dihapus dari keranjang")
     return redirect('keranjang_detail')
 
-@login_required
+@login_required(login_url='/login')
 def checkout(request):
     keranjang = get_object_or_404(Keranjang, user=request.user)
     if keranjang.itemkeranjang_set.count() == 0:
@@ -90,7 +90,7 @@ def checkout(request):
 
 logger = logging.getLogger(__name__)
 
-@login_required
+@login_required(login_url='/login')
 @require_POST
 def tambah_ke_keranjang_ajax(request, product_id):
     try:

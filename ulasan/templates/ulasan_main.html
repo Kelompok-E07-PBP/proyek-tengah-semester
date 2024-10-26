@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block meta %}
+{% load tz %}
+{% endblock meta %}
+{% block content %}
+<h1>{{nama_halaman}}</h1>
+
+{% if not ulasan_entries %}
+<p>Belum ada ulasan di Mujur Reborn.</p>
+
+{% else %}
+<table>
+  <tr>
+    <th>Nama</th>
+    <th>Waktu</th>
+    <th>Nama Produk</th>
+    <th>Rating</th>
+    <th>Komentar</th>
+  </tr>
+
+  {% for ulasan_entry in ulasan_entries %}
+  <tr>
+    <td>{{ulasan_entry.user.username}}</td>
+    <td>{{ulasan_entry.waktu|localtime}}</td>
+    <td>{{ulasan_entry.nama_produk_ulas}}</td>
+    <td>{{ulasan_entry.rating}}</td>
+    <td>{{ulasan_entry.komentar}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'ulasan:create_ulasan_entry' %}">
+  <button>Tambahkan Ulasan</button>
+</a>
+{% endblock content %}
