@@ -17,6 +17,7 @@ class Pengiriman(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -25,3 +26,6 @@ class Pengiriman(models.Model):
     city = models.CharField(max_length=100, choices=CITY_CHOICES)
     postal_code = models.IntegerField()
     courier = models.CharField(max_length=100, choices=COURIER_CHOICES)
+
+    def __str__(self):
+        return f'Pengiriman for {self.user.username} on {self.created_at}'

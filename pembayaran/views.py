@@ -16,7 +16,7 @@ def pembayaran_view(request):
     total_harga_keranjang = keranjang.get_total()
 
     try:
-        pengiriman = Pengiriman.objects.get(user=user)
+        pengiriman = Pengiriman.objects.filter(user=user).latest('created_at')
         city = pengiriman.city
         delivery_fee = calculate_delivery_fee(city)
     except Pengiriman.DoesNotExist:
@@ -84,6 +84,8 @@ def process_payment_ajax(request):
             pembayaran.save()
 
             keranjang.itemkeranjang_set.all().delete()
+
+            pengiriman.delete()
 
             return JsonResponse({'message': 'Payment successful!', 'total_amount': total_harga})
         except Exception as e:
