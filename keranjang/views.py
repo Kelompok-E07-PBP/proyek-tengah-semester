@@ -86,7 +86,8 @@ def checkout(request):
         messages.error(request, "Keranjang belanja kosong")
         return redirect('keranjang_detail')
     
-    return redirect('payment_page')
+    return redirect('pembayaran:pembayaran_view')
+
 
 logger = logging.getLogger(__name__)
 

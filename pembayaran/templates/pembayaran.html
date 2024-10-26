@@ -1,51 +1,119 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% block meta %}
 <title>Pembayaran | Mujur Reborn</title>
 {% endblock meta %}
 
 {% block content %}
-<h1>Checkout</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-6">Checkout</h1>
 
-<table>
-    <thead>
-        <tr>
-            <th>Produk</th>
-            <th>Harga Satuan</th>
-            <th>Jumlah</th>
-            <th>Subtotal Harga</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in keranjang_items %}
-        <tr>
-            <td>{{ item.product.nama_produk }}</td>
-            <td>{{ item.product.harga }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.get_subtotal }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td colspan="3">Total Harga:</td>
-            <td>{{ total_harga }} IDR</td>
-        </tr>
-    </tbody>
-</table>
-
-<!-- Address Input (if needed, or you can remove this) -->
-
-<form method="POST">
-    {% csrf_token %}
-    
-    <!-- Payment Method Radio Buttons -->
-    <h3>Metode Pembayaran:</h3>
-    {% for method in payment_methods %}
-    <div>
-        <input type="radio" id="payment_method_{{ method.id }}" name="payment_method" value="{{ method.id }}" {% if method.id == selected_payment_method %}checked{% endif %}>
-        <label for="payment_method_{{ method.id }}">{{ method.get_name_display }}</label>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-8">
+        <table class="min-w-full bg-white border rounded-lg">
+            <thead class="bg-gray-100 border-b">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produk</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Satuan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal Harga</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                {% for item in keranjang_items %}
+                <tr class="border-b">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ item.product.nama_produk }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp {{ item.product.harga|intdot }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.quantity }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp {{ item.get_subtotal|intdot }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="border-t bg-gray-50">
+                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-right font-semibold text-gray-700">Delivery Fee: </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-semibold">Rp {{ delivery_fee|intdot }}</td>
+                </tr>
+                <tr class="border-t bg-gray-50">
+                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-right font-semibold text-gray-700">Total Harga:</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-semibold">Rp {{ total_harga|intdot }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    {% endfor %}
+    
+    <!-- Payment form with SweetAlert -->
+    <form method="POST" id="pembayaran-form" class="bg-white p-6 shadow-lg rounded-lg">
+        {% csrf_token %}
+        <!-- Payment options as hardcoded options -->
+        <h3 class="text-xl font-semibold mb-4">Metode Pembayaran:</h3>
+        <div class="space-y-2">
+            <div class="flex items-center">
+                <input type="radio" id="payment_method_1" name="payment_method" value="Kartu Kredit" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="payment_method_1" class="ml-3 block text-sm font-medium text-gray-700">Kartu Kredit</label>
+            </div>
+            <div class="flex items-center">
+                <input type="radio" id="payment_method_2" name="payment_method" value="Kartu Debit" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="payment_method_2" class="ml-3 block text-sm font-medium text-gray-700">Kartu Debit</label>
+            </div>
+            <div class="flex items-center">
+                <input type="radio" id="payment_method_3" name="payment_method" value="Transfer Bank" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="payment_method_3" class="ml-3 block text-sm font-medium text-gray-700">Transfer Bank</label>
+            </div>
+            <div class="flex items-center">
+                <input type="radio" id="payment_method_4" name="payment_method" value="E-Wallet" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                <label for="payment_method_4" class="ml-3 block text-sm font-medium text-gray-700">E-Wallet</label>
+            </div>
+        </div>
 
-    <button type="submit">Bayar</button>
-</form>
+        <button type="submit" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+            Bayar
+        </button>
+    </form>
+</div>
 
+<!-- SweetAlert2 and AJAX Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('pembayaran-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        const formData = new FormData(this);
+
+        fetch("{% url 'pembayaran:process_payment_ajax' %}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Payment successful!') {
+                // Show success modal
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Pembayaran berhasil dilakukan!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = "{% url 'main:show_main' %}"; // Redirect to main page after confirmation
+                });
+            } else if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.error,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat melakukan pembayaran.',
+            });
+        });
+    });
+</script>
 {% endblock %}
