@@ -85,6 +85,8 @@ def process_payment_ajax(request):
 
             keranjang.itemkeranjang_set.all().delete()
 
+            pengiriman.delete()
+
             return JsonResponse({'message': 'Payment successful!', 'total_amount': total_harga})
         except Exception as e:
             print("Error during payment processing:", e)
