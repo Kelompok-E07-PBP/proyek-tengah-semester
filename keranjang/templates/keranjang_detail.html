@@ -67,10 +67,10 @@
         </div>
         
         <div class="flex justify-center">
-            <a href="{% url 'checkout' %}" 
-               class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
-                Lanjut ke Pembayaran
-            </a>
+            <a href="{% url 'checkout' %}?keranjang_id={{ keranjang.id }}" 
+            class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
+            Lanjut Pengiriman
+         </a>
         </div>
     {% else %}
         <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">

@@ -6,6 +6,8 @@ from .forms import TambahKeKeranjangForm, UpdateItemKeranjangForm
 from main.models import Product
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 import logging
 import uuid
 
@@ -86,7 +88,8 @@ def checkout(request):
         messages.error(request, "Keranjang belanja kosong")
         return redirect('keranjang_detail')
     
-    return redirect('pembayaran:pembayaran_view')
+    url = reverse('pengiriman:pengiriman') + f'?keranjang_id={keranjang.id}'
+    return HttpResponseRedirect(url)
 
 
 logger = logging.getLogger(__name__)
