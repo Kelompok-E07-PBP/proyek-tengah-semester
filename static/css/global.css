@@ -109,8 +109,106 @@ textarea:focus {
     animation: gradientMove 8s ease infinite;
 }
 
-/* .animated-gradient {
-    background: linear-gradient(270deg, #4f46e5, #9333ea, #3b82f6, #6366f1);
-    background-size: 240% 240%;
-    animation: gradientMove 8s ease infinite;
-} */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@layer components {
+    .button-gradient {
+      background-image: linear-gradient(
+        45deg,
+        #03d9ff 0%,
+        #00c3e6 50%,
+        #03d9ff 100%
+      );
+      background-size: 200% auto;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    .button-gradient:hover {
+      background-position: right center;
+    }
+  
+    .bg-gradient-shine {
+      background: linear-gradient(
+        45deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 75%
+      );
+      background-size: 200% 200%;
+      animation: shine 3s linear infinite;
+    }
+  
+    @keyframes shine {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+  }
+
+  @layer components {
+    .update-btn {
+      position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(
+        45deg,
+        #10b981 0%,
+        #059669 50%,
+        #10b981 100%
+      );
+      background-size: 200% auto;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    .update-btn:hover {
+      background-position: right center;
+    }
+  
+    .bg-update-shine {
+      background: linear-gradient(
+        45deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 75%
+      );
+      background-size: 200% 200%;
+      animation: shine 2s linear infinite;
+    }
+  
+    .delete-btn {
+      position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(
+        45deg,
+        #ef4444 0%,
+        #dc2626 50%,
+        #ef4444 100%
+      );
+      background-size: 200% auto;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    .delete-btn:hover {
+      background-position: right center;
+    }
+  
+    .bg-delete-shine {
+      background: linear-gradient(
+        45deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 75%
+      );
+      background-size: 200% 200%;
+      animation: shine 2s linear infinite;
+    }
+  
+  }

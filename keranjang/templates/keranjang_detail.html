@@ -1,86 +1,304 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block meta %}
-<title>Mujur Reborn</title>
+Mujur Reborn
+<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
 {% endblock meta %}
 
 {% block content %}
-{% include 'user_navbar.html' %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
-    <!-- Decorative line for mobile -->
-    <div class="p-2 mb-6 relative">
-        <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex">
-            <div class="h-full min-w-4 bg-[#FFAEBC] mx-auto"></div>
-        </div>
+<div class="relative min-h-screen">
+    <div class="absolute inset-0 bg-gray-50 z-0">
+      <div class="absolute inset-0 opacity-[0.3]" 
+        style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), 
+        linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px);
+        background-size: 100px 100px;">
+      </div>
     </div>
+<div class="flex flex-col min-h-screen">
+{% include 'user_navbar.html' %}
 
-    <h2 class="text-3xl font-bold mb-8 text-center text-black">Keranjang Belanja</h2>
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
+    <h2 class="text-center text-2xl font-bold text-[#444445] mb-6 z-10">Keranjang Belanja</h2>
 
     {% if keranjang.itemkeranjang_set.all %}
-        <div class="overflow-x-auto rounded-lg shadow-lg mb-8">
-            <table class="w-full border-collapse bg-white">
-                <thead class="bg-[#B4F8C8]">
-                    <tr>
-                        <th class="p-4 font-semibold text-gray-800 text-left">Produk</th>
-                        <th class="p-4 font-semibold text-gray-800 text-left">Harga</th>
-                        <th class="p-4 font-semibold text-gray-800 text-left">Jumlah</th>
-                        <th class="p-4 font-semibold text-gray-800 text-left">Subtotal</th>
-                        <th class="p-4 font-semibold text-gray-800 text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in keranjang.itemkeranjang_set.all %}
-                    <tr class="border-b hover:bg-[#FBE7C6] transition-colors duration-200">
-                        <td class="p-4">{{ item.product.nama_produk }}</td>
-                        <td class="p-4">Rp {{ item.product.harga }}</td>
-                        <td class="p-4">
-                            <form method="POST" action="{% url 'update_keranjang' item.id %}" class="flex items-center space-x-2">
-                                {% csrf_token %}
-                                <input type="number" 
-                                       name="quantity" 
-                                       value="{{ item.quantity }}"
-                                       min="1" 
-                                       class="w-20 px-2 py-1 border rounded">
-                                <button type="submit" 
-                                        class="px-3 py-1 rounded bg-[#B4F8C8] text-gray-800 hover:bg-opacity-80 transition-colors duration-200">
-                                    Update
-                                </button>
-                            </form>
-                        </td>
-                        <td class="p-4">Rp {{ item.get_subtotal }}</td>
-                        <td class="p-4">
-                            <a href="{% url 'hapus_dari_keranjang' item.id %}" 
-                               class="px-4 py-2 rounded-full bg-[#FFAEBC] text-white hover:bg-opacity-80 transition-colors duration-200">
-                                Hapus
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    <tr class="bg-[#FBE7C6]">
-                        <td colspan="3" class="p-4 font-bold text-gray-800">Total:</td>
-                        <td class="p-4 font-bold text-gray-800">Rp {{ keranjang.get_total }}</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="flex justify-center">
-            <a href="{% url 'checkout' %}?keranjang_id={{ keranjang.id }}" 
-            class="px-6 py-3 rounded-full bg-[#FFAEBC] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
-            Lanjut Pengiriman
-         </a>
-        </div>
+    <div class="overflow-x-auto rounded-lg shadow-lg mb-8 z-10">
+        <table class="w-full bg-white">
+            <thead class="bg-[#444445] text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left">Produk</th>
+                    <th class="px-6 py-3 text-left">Harga</th>
+                    <th class="px-6 py-3 text-left">Jumlah</th>
+                    <th class="px-6 py-3 text-left">Subtotal</th>
+                    <th class="px-6 py-3 text-left">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in keranjang.itemkeranjang_set.all %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">{{ item.product.nama_produk }}</td>
+                    <td class="px-6 py-4">Rp {{ item.product.harga }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center space-x-2">
+                            <input type="number" name="quantity" data-item-id="{{ item.id }}" 
+                                value="{{ item.quantity }}" min="1" 
+                                class="w-20 px-2 py-1 border rounded-md">
+                            <button type="button" onclick="updateQuantity('{{ item.id }}')" class="update-btn inline-flex items-center px-4 py-2 rounded-md bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-all duration-300 group hover:shadow-md hover:translate-y-[-1px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 transform group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Update
+                                <div class="absolute inset-0 h-full w-full bg-update-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4" id="subtotal-{{ item.id }}">Rp {{ item.get_subtotal }}</td>
+                    <td class="px-6 py-4">
+                        <button onclick="deleteItem('{{ item.id }}')" class="delete-btn inline-flex items-center px-4 py-2 rounded-md bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-all duration-300 group hover:shadow-md hover:translate-y-[-1px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 transform group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Hapus
+                            <div class="absolute inset-0 h-full w-full bg-delete-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="bg-gray-50">
+                <tr>
+                    <td colspan="3" class="px-6 py-4 text-right font-bold">Total:</td>
+                    <td colspan="2" class="px-6 py-4 font-bold" id="cart-total">Rp {{ keranjang.get_total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="flex justify-center z-10">
+        <a href="{% url 'checkout' %}" class="group px-6 py-3 rounded-md bg-[#03d9ff] text-white text-lg font-semibold hover:bg-opacity-80 transition-all duration-300 flex items-center space-x-2 hover:translate-y-[-2px] hover:shadow-lg button-gradient relative overflow-hidden">
+            <span class="relative z-10 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transform group-hover:rotate-12 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span class="relative z-10">Beli Sekarang!</span>
+            </span>
+            <div class="absolute inset-0 h-full w-full bg-gradient-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </a>
+    </div>
+
     {% else %}
-        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-            <img src="{% static 'image/keranjang_kosong.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
-            <p class="text-center text-gray-600 mt-4">Keranjang belanja Anda kosong.</p>
-            <a href="{% url 'main:show_main' %}" 
-               class="mt-6 px-6 py-3 rounded-full bg-[#03d9ff] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
-                Lanjut Belanja
-            </a>
-        </div>
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6 z-10">
+        <img src="{% static 'image/keranjang_kosong.png' %}" alt="Empty Cart" class="w-32 h-32 mb-4">
+        <p class="text-[#444445] text-lg mb-4">Keranjang belanja Anda kosong.</p>
+        <a href="{% url 'main:show_main' %}" 
+            class="mt-6 px-6 py-3 rounded-md bg-[#03d9ff] text-white text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200">
+            Lanjut Belanja!
+        </a>
+    </div>
     {% endif %}
 </div>
+<footer class="mt-8 py-6 bg-gray-100 border-t z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+        <div class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#03d9ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span class="text-gray-600 font-semibold">Mujur Reborn</span>
+        </div>
+        <p class="text-gray-500 text-sm">© 2024 Mujur Reborn. All rights reserved.</p>
+        <div class="flex items-center space-x-2">
+          <span class="text-gray-600 text-sm">Keranjang Made By:</span>
+          <a href="https://github.com/KrisnaPutraP" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.32/sweetalert2.min.js"></script>
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function refreshCart() {
+    location.reload();
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
+
+function updateQuantity(itemId) {
+    const quantityInput = document.querySelector(`input[name="quantity"][data-item-id="${itemId}"]`);
+    const quantity = parseInt(quantityInput.value);
+    
+    if (quantity < 1) {
+        alert('Jumlah harus lebih dari 0');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('quantity', quantity);
+
+    Swal.fire({
+        title: 'Memperbarui keranjang...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch(`/keranjang/update-keranjang-ajax/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const subtotalCell = document.querySelector(`#subtotal-${itemId}`);
+            if (subtotalCell) {
+                subtotalCell.textContent = formatCurrency(data.subtotal);
+            }
+            
+            const totalCell = document.querySelector('#cart-total');
+            if (totalCell) {
+                totalCell.textContent = formatCurrency(data.total);
+            }
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: data.message,
+                confirmButtonColor: '#03d9ff',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: data.message || 'Terjadi kesalahan saat memperbarui keranjang',
+                confirmButtonColor: '#03d9ff'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Terjadi kesalahan saat memperbarui keranjang',
+            confirmButtonColor: '#03d9ff'
+        });
+    });
+}
+
+function deleteItem(itemId) {
+    Swal.fire({
+        title: 'Anda yakin?',
+        text: "Item ini akan dihapus dari keranjang",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#03d9ff',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Menghapus item...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(`/keranjang/hapus-dari-keranjang-ajax/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const itemRow = document.querySelector(`tr[data-item-id="${itemId}"]`);
+                    if (itemRow) {
+                        itemRow.remove();
+                    }
+                    
+                    const totalCell = document.querySelector('#cart-total');
+                    if (totalCell) {
+                        totalCell.textContent = formatCurrency(data.total);
+                    }
+                    
+                    if (data.is_empty) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                            confirmButtonColor: '#03d9ff',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            refreshCart();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                            confirmButtonColor: '#03d9ff',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Terjadi kesalahan saat menghapus item',
+                        confirmButtonColor: '#03d9ff'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menghapus item',
+                    confirmButtonColor: '#03d9ff'
+                });
+            });
+        }
+    });
+}
+</script>
+
 {% endblock content %}

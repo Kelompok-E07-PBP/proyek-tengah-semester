@@ -7,65 +7,249 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock meta %}
 {% block content %}
-{% include 'user_navbar.html' %}
-<div id="addToCartModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full" style="z-index: 999;">
-  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-      <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900" id="modalProductName"></h3>
-          <div class="mt-2">
-              <p class="text-gray-500" id="modalProductPrice"></p>
-              <form id="addToCartForm" class="mt-4">
-                  {% csrf_token %}
-                  <div class="mb-4">
-                      <label class="block text-gray-700 text-sm font-bold mb-2" for="id_quantity">
-                          Jumlah
-                      </label>
-                      <input type="number" name="quantity" id="id_quantity"
-                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          value="1" min="1">
-                  </div>
-                  <div class="flex items-center justify-between mt-4">
-                      <button type="submit"
-                          class="bg-[#FFAEBC] hover:bg-[#ff9eaf] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                          Tambah ke Keranjang
-                      </button>
-                      <button type="button" onclick="closeModal()"
-                          class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                          Batal
-                      </button>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
-</div>
-
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
-  <div class="p-2 mb-6 relative">
-    <div class="h-full w-full py-6  absolute top-0 left-0 z-20 md:hidden flex ">
-      <div class="h-full min-w-4 bg-[#FFAEBC] mx-auto">
+<div class="relative min-h-screen">
+    <div class="absolute inset-0 bg-gray-50 z-0">
+      <div class="absolute inset-0 opacity-[0.3]" 
+        style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), 
+        linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px);
+        background-size: 100px 100px;">
       </div>
     </div>
+<div class="flex flex-col min-h-screen">
+{% include 'user_navbar.html' %}
+
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#444445]/5 to-[#444445]/5 mix-blend-overlay"></div>
   </div>
 
-    <div class="flex flex-row justify-between items-center mb-6">
-      <div class="flex items-center space-x-4">
-        <select class="border rounded p-2" id="filter-kategori">
-          <option value="">Filter berdasarkan kategori</option>
-          <option value="Dasi Instant">Dasi Instant</option>
-          <option value="Dasi Manual">Dasi Manual</option>
-          <option value="Dasi Kupu-Kupu">Dasi Kupu-Kupu</option>
-          <option value="Jepitan Dasi">Jepitan Dasi</option>
-        </select>
-      </div>
+  <div id="addToCartModal" class="hidden fixed inset-0 z-50 w-full h-full flex items-center justify-center bg-gray-800/50 backdrop-blur-sm">
+    <div class="relative bg-white rounded-xl shadow-2xl w-96 mx-4 sm:mx-0 transform scale-95 opacity-100 transition-all duration-300 ease-out">
+        <div class="relative">
+            <div class="absolute inset-0 bg-[#444445] opacity-90">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+            </div>
+            <div class="relative px-6 py-8 text-white">
+                <div class="absolute top-8 right-12 transform translate-x-1/2 -translate-y-1/2">
+                    <div class="w-8 h-8 rounded-full bg-white opacity-10"></div>
+                </div>
+                <div class="absolute bottom-10 left-12 transform -translate-x-1/2 translate-y-1/2">
+                    <div class="w-16 h-16 rounded-full bg-white opacity-10"></div>
+                </div>
+                
+                <div class="space-y-2">
+                    <h3 id="modalProductName" class="text-2xl font-bold tracking-tight"></h3>
+                    <p id="modalProductPrice" class="text-sm text-white/80"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-6 space-y-6">
+            <form id="addToCartForm" class="space-y-4">
+                {% csrf_token %}
+                <div class="space-y-2">
+                    <label for="id_quantity" class="block text-sm font-medium text-[#444445]">
+                        Jumlah
+                        <span class="text-[#03d9ff]">*</span>
+                    </label>
+                    <div class="relative">
+                        <input type="number" name="quantity" id="id_quantity" min="1" value="1"
+                            class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#03d9ff] focus:ring-2 focus:ring-[#03d9ff]/20 focus:outline-none transition-colors duration-200 pl-10">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3 pt-6 border-t border-gray-200 justify-end">
+                    <button type="button" onclick="closeModal()"
+                        class="inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-[#444445] text-white font-semibold
+                        transform transition-all duration-300 hover:bg-opacity-90 hover:shadow-md active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-[#03d9ff] text-white font-semibold
+                        transform transition-all duration-300 hover:bg-opacity-90 hover:shadow-md active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        Tambah ke Keranjang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
+    <!-- Carousel Section -->
+    <div class="mb-12 z-10">
+        <h2 class="text-center text-2xl font-bold text-[#444445] mb-6">Ikat Dasi, Ikat Keberuntungan.</h2>
+        <div class="relative overflow-hidden">
+            <!-- Carousel Container -->
+            <div class="flex space-x-4 overflow-x-hidden pb-4 scrollbar-hide" id="carousel">
+                <!-- Carousel Items -->
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie1.webp' %}" alt="Tie 1" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie2.webp' %}" alt="Tie 2" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie3.webp' %}" alt="Tie 3" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie4.webp' %}" alt="Tie 4" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie5.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie6.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie7.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie8.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie9.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none w-64">
+                    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img src="{% static 'image/tie10.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
+                        <div class="p-4 bg-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filter Section -->
+    <div class="flex flex-row justify-between items-center mb-6 z-10">
+        <div class="flex items-center space-x-4">
+            <div class="flex space-x-2 overflow-x-auto">
+                <!-- Filter Buttons with data-category attributes -->
+                <button class="category-button px-4 py-2 bg-[#444445] text-white rounded-md hover:bg-[#03d9ff] transition-colors" data-category="">
+                    Semua
+                </button>
+                <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="Dasi Instant">
+                    Dasi Instant
+                </button>
+                <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="Dasi Manual">
+                    Dasi Manual
+                </button>
+                <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="Dasi Kupu-Kupu">
+                    Dasi Kupu-Kupu
+                </button>
+                <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="Jepitan Dasi">
+                    Jepitan Dasi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product_entry_cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full z-10">
+    </div>
+</div>
+<footer class="mt-8 py-6 bg-gray-100 border-t z-10">
+    <div class="absolute bottom-20 left-4 z-50">
       <div class="flex rounded-md items-center bg-[#444445] py-1 px-2 w-fit opacity-80">
         <h1 class="text-white text-center text-sm">Last Login at: {{last_login}}</h1>
       </div>
     </div>
-
-    <div id="product_entry_cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+        <div class="flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#03d9ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span class="text-gray-600 font-semibold">Mujur Reborn</span>
+        </div>
+        <p class="text-gray-500 text-sm">© 2024 Mujur Reborn. All rights reserved.</p>
+        <div class="flex items-center space-x-2">
+          <span class="text-gray-600 text-sm">Check our github page!</span>
+          <a href="https://github.com/Mabacore101" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="https://github.com/KrisnaPutraP" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="https://github.com/rRaffiDH" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="https://github.com/dickyybayu" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="https://github.com/hamidzone" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="https://github.com/JAGS1111" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </div>
 
+</div>
 <script>
   let currentProductId = null;
 
@@ -82,7 +266,6 @@
       currentProductId = null;
   }
 
-  // AJAX form submission
   $(document).ready(function() {
       $('#addToCartForm').on('submit', function(e) {
           e.preventDefault();
@@ -105,7 +288,7 @@
                       title: 'Berhasil!',
                       text: 'Produk berhasil ditambahkan ke keranjang',
                       icon: 'success',
-                      confirmButtonColor: '#FFAEBC'
+                      confirmButtonColor: '#05FA26'
                   }).then((result) => {
                       closeModal();
                   });
@@ -115,7 +298,7 @@
                       title: 'Error!',
                       text: 'Gagal menambahkan produk ke keranjang',
                       icon: 'error',
-                      confirmButtonColor: '#FFAEBC'
+                      confirmButtonColor: '#FA0519'
                   });
               }
           });
@@ -128,74 +311,94 @@
     return fetch("{% url 'edit:show_json' %}").then((res) => res.json())
   }
 
-
-
   async function refreshProductEntries(kategoriTerpilih = '') {
-    document.getElementById("product_entry_cards").innerHTML = "";
-    document.getElementById("product_entry_cards").className = "";
+    const productContainer = document.getElementById("product_entry_cards");
+    productContainer.innerHTML = "";
+    
     const productEntries = await getProductEntries();
-    let htmlString = "";
-    let classNameString = "";
-
     const filteredEntries = kategoriTerpilih
         ? productEntries.filter(item => item.fields.kategori === kategoriTerpilih)
         : productEntries;
-
+        
     if (filteredEntries.length === 0) {
-        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
-        htmlString = `
-          <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-            <img src="{% static 'image/formal.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
-            <p class="text-center text-gray-600 mt-4">Belum ada produk pada Mujur Reborn.</p>
-          </div>
-        `;
+      productContainer.innerHTML = `
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6 z-10    ">
+          <img src="{% static 'image/formal.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
+          <p class="text-center text-gray-600 mt-4">Belum ada produk pada Mujur Reborn.</p>
+        </div>`;
     } else {
-        classNameString = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full";
-        filteredEntries.forEach((item) => {
-            const nama_produk = DOMPurify.sanitize(item.fields.nama_produk);
-            const kategori = DOMPurify.sanitize(item.fields.kategori);
-            htmlString += `
-            <div class="relative break-inside-avoid">
-              <div class="relative top-5 bg-[#FBE7C6] shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col transform transition-transform duration-300">
-                <div class="bg-[#FFAEBC] text-gray-800 p-4 rounded-t-lg border-b-2 border-[#FFAEBC]">
-                  <h3 class="font-bold text-xl mb-2">${nama_produk}</h3>
-                </div>
-                <div class="p-4">
-                  <p class="font-semibold text-lg mb-2">Kategori</p>
-                  <p class="text-gray-700 mb-2">
-                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${kategori}</span>
-                  </p>
-                  <div class="mt-4">
-                    <p class="font-semibold text-lg mb-2">Harga</p>
-                    <p class="text-gray-700 mb-2">
-                      <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">Rp${item.fields.harga}</span>
-                    </p>
-                    <img src="${item.fields.gambar_produk}" alt="Gambar ${nama_produk}">
-                  </div>
-                </div>
-              </div>
-              <div class="absolute top-0 -right-4 flex space-x-1">
-                <button onclick="openModal('${item.pk}', '${nama_produk}', '${item.fields.harga}')" class="bg-green-600 hover:bg-green-500 text-white rounded-full p-2 transition duration-300 shadow-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10 3a1 1 0 011 1v6h6a1 1 0 110 2h-6v6a1 1 0 01-2 0v-6H3a1 1 0 110-2h6V4a1 1 0 011-1z" />
-                  </svg>
-                </button>
-              </div>
+      filteredEntries.forEach(item => {
+        const { nama_produk, kategori, harga, gambar_produk } = item.fields;
+        productContainer.innerHTML += `
+          <div class="bg-white shadow-lg rounded-lg overflow-hidden transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+            <img src="${gambar_produk}" alt="${nama_produk}" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="text-lg font-semibold text-gray-800 mb-1">${nama_produk}</h3>
+              <p class="text-sm text-gray-500 mb-4">${kategori}</p>
+              <p class="text-[#03d9ff] font-bold text-lg">Rp${harga}</p>
+              <button class="mt-4 w-full bg-[#444445] text-white py-2 rounded-md hover:bg-[#03d9ff] transition-colors" onclick="openModal('${item.pk}', '${nama_produk}', '${item.fields.harga}')">Tambah ke Keranjang!</button>
             </div>
-            `;
-        });
+          </div>`;
+      });
     }
-    document.getElementById("product_entry_cards").className = classNameString;
-    document.getElementById("product_entry_cards").innerHTML = htmlString;
-}
+  }
 
-refreshProductEntries();
+  document.querySelectorAll('.category-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const selectedCategory = this.getAttribute('data-category');
+      refreshProductEntries(selectedCategory);
+    });
+  });
+
+  refreshProductEntries();
 
 
+  document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.getElementById('carousel');
+    let scrollAmount = 0;
+    const slideWidth = 256; 
+    const scrollSpeed = 2; 
+    const spacing = 16; 
+    let isScrollingForward = true;
+    let animationFrameId;
 
-document.getElementById("filter-kategori").addEventListener('change', async function(){
-  const kategoriTerpilih = this.value;
-  refreshProductEntries(kategoriTerpilih)
+    const maxScroll = (slideWidth + spacing) * carousel.children.length - carousel.clientWidth;
+
+    function autoScroll() {
+        if (isScrollingForward) {
+            scrollAmount += scrollSpeed;
+            if (scrollAmount >= maxScroll) {
+                isScrollingForward = false;
+                setTimeout(() => {
+                    animationFrameId = requestAnimationFrame(autoScroll);
+                }, 500);
+                return;
+            }
+        } else {
+            scrollAmount -= scrollSpeed;
+            if (scrollAmount <= 0) {
+                isScrollingForward = true;
+                scrollAmount = 0;
+                setTimeout(() => {
+                    animationFrameId = requestAnimationFrame(autoScroll);
+                }, 500);
+                return;
+            }
+        }
+
+        carousel.scrollLeft = scrollAmount;
+        animationFrameId = requestAnimationFrame(autoScroll);
+    }
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+
+    carousel.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(animationFrameId);
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+        animationFrameId = requestAnimationFrame(autoScroll);
+    });
 });
 </script>
 

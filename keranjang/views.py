@@ -98,14 +98,11 @@ logger = logging.getLogger(__name__)
 @require_POST
 def tambah_ke_keranjang_ajax(request, product_id):
     try:
-        # Convert string UUID to UUID object
         product_uuid = uuid.UUID(product_id)
         
-        # Get the product using the UUID
         product = get_object_or_404(Product, id=product_uuid)
         keranjang, created = Keranjang.objects.get_or_create(user=request.user)
-        
-        # Get quantity from POST data
+
         try:
             quantity = int(request.POST.get('quantity', 1))
         except ValueError:
@@ -137,14 +134,71 @@ def tambah_ke_keranjang_ajax(request, product_id):
         })
         
     except ValueError as e:
-        # Invalid UUID format
         return JsonResponse({
             'success': False,
             'message': 'ID produk tidak valid'
         }, status=400)
     except Exception as e:
-        print(f"Error: {str(e)}")  # For debugging
+        print(f"Error: {str(e)}") 
         return JsonResponse({
             'success': False,
             'message': 'Gagal menambahkan produk ke keranjang'
         }, status=400)
+    
+
+@login_required(login_url='/login')
+@require_POST
+def update_keranjang_ajax(request, item_id):
+    try:
+        item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
+        new_quantity = int(request.POST.get('quantity', 1))
+        
+        if new_quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'message': 'Jumlah harus lebih dari 0'
+            }, status=400)
+        
+        item_keranjang.quantity = new_quantity
+        item_keranjang.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Keranjang berhasil diperbarui',
+            'subtotal': item_keranjang.get_subtotal(),
+            'total': item_keranjang.keranjang.get_total()
+        })
+        
+    except (ValueError, TypeError):
+        return JsonResponse({
+            'success': False,
+            'message': 'Jumlah tidak valid'
+        }, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': 'Terjadi kesalahan saat memperbarui keranjang'
+        }, status=500)
+
+@login_required(login_url='/login')
+@require_POST
+def hapus_dari_keranjang_ajax(request, item_id):
+    try:
+        item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
+        keranjang = item_keranjang.keranjang
+        item_keranjang.delete()
+        
+        is_empty = keranjang.itemkeranjang_set.count() == 0
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Item berhasil dihapus dari keranjang',
+            'total': keranjang.get_total(),
+            'is_empty': is_empty
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': 'Terjadi kesalahan saat menghapus item'
+        }, status=500)

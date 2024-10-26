@@ -8,7 +8,7 @@
 {% block content %}
 <div class="relative min-h-screen">
   <div class="absolute inset-0 bg-gray-50 z-[-1]">
-    <div class="absolute inset-0 opacity-[0.4]" 
+    <div class="absolute inset-0 opacity-[0.3]" 
       style="background-image: linear-gradient(rgba(68, 68, 69, 0.1) 1px, transparent 1px), 
       linear-gradient(to right, rgba(68, 68, 69, 0.1) 1px, transparent 1px);
       background-size: 100px 100px;">
@@ -18,25 +18,6 @@
 <div class="flex-grow">
   {% include 'admin_navbar.html' %}
   <div class="overflow-x-hidden px-4 md:px-8 pb-24 pt-20 min-h-screen flex-col">  
-
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
-    <!-- Top Right Blob -->
-    <div class="absolute -right-32 -top-32 w-[40rem] h-[40rem]">
-      <div class="absolute inset-0 bg-[#03d9ff]/20 rounded-full filter blur-3xl animate-pulse-background"
-        style="animation: pulse-background 6s infinite cubic-bezier(0.4, 0, 0.6, 1);">
-      </div>
-    </div>
-    
-    <!-- Bottom Left Blob -->
-    <div class="absolute -left-32 -bottom-32 w-[40rem] h-[40rem]">
-      <div class="absolute inset-0 bg-[#FFAEBC]/25 rounded-full filter blur-3xl animate-pulse-background"
-        style="animation: pulse-background 6s infinite cubic-bezier(0.4, 0, 0.6, 1);">
-      </div>
-    </div>
-    
-    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#03d9ff]/5 to-[#FFAEBC]/5 mix-blend-overlay"></div>
-  </div>
-
   <div class="flex flex-row justify-between items-center mb-6">
     <div class="flex items-center space-x-4">
       <select class="border rounded p-2" id="filter-kategori">
@@ -134,9 +115,15 @@
               <span class="text-[#03d9ff]">*</span>
             </label>
             <div class="relative">
-              <input type="text" id="kategori" name="kategori" 
+              <select id="kategori" name="kategori" 
                 class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#03d9ff] focus:ring-2 focus:ring-[#03d9ff]/20 focus:outline-none transition-colors duration-200 pl-10" 
-                placeholder="Masukkan kategori produk" required>
+                required>
+                <option value="" disabled selected hidden>Masukkan kategori produk</option>
+                <option value="Dasi Instant">Dasi Instant</option>
+                <option value="Dasi Manual">Dasi Manual</option>
+                <option value="Dasi Kupu-Kupu">Dasi Kupu-Kupu</option>
+                <option value="Jepitan Dasi">Jepitan Dasi</option>
+              </select>
               <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
@@ -144,6 +131,7 @@
               </span>
             </div>
           </div>
+          
           
           <div class="space-y-2">
             <label for="harga" class="block text-sm font-medium text-[#444445]">
