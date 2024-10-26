@@ -1,38 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block meta %}
 {% load tz %}
+<title>Ulasan | Mujur Reborn</title>
 {% endblock meta %}
 {% block content %}
-<h1>{{nama_halaman}}</h1>
-
-{% if not ulasan_entries %}
-<p>Belum ada ulasan di Mujur Reborn.</p>
-
-{% else %}
-<table>
-  <tr>
-    <th>Nama</th>
-    <th>Waktu</th>
-    <th>Nama Produk</th>
-    <th>Rating</th>
-    <th>Komentar</th>
-  </tr>
-
-  {% for ulasan_entry in ulasan_entries %}
-  <tr>
-    <td>{{ulasan_entry.user.username}}</td>
-    <td>{{ulasan_entry.waktu|localtime}}</td>
-    <td>{{ulasan_entry.nama_produk_ulas}}</td>
-    <td>{{ulasan_entry.rating}}</td>
-    <td>{{ulasan_entry.komentar}}</td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
-
-<br />
-
-<a href="{% url 'ulasan:create_ulasan_entry' %}">
-  <button>Tambahkan Ulasan</button>
-</a>
+{% include 'user_navbar.html' %}
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-gray-100 flex flex-col">
+    <div class="flex flex-row justify-between items-center mb-6">
+      <a href="{% url 'ulasan:create_ulasan_entry' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+        Tambahkan Ulasan
+      </a>
+    </div>
+    
+    {% if not ulasan_entries %}
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+      <img src="{% static 'image/ulasan_kosong.png' %}" alt="Ulasan Kosong" class="w-36 h-49 mb-4"/>
+      <p class="text-center text-gray-600 mt-4">Belum ada ulasan pada Mujur Reborn.</p>
+    </div>
+    {% else %}
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
+        {% for ulasan_entry in ulasan_entries %}
+            {% include 'card_ulasan.html' with ulasan_entry=ulasan_entry %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
 {% endblock content %}
