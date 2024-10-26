@@ -1,14 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Pembayaran(models.Model):
-    STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('SUCCESS', 'Success'),
-        ('FAILED', 'Failed'),
-    ]
-
-    
+class Pembayaran(models.Model):    
     METHOD_CHOICES = [
         ('Kartu Kredit', 'Kartu Kredit'),
         ('Kartu Debit', 'Kartu Debit'),
