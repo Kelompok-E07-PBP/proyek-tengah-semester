@@ -5,8 +5,9 @@
 <title>Mujur Reborn Admin</title>
 {% endblock meta %}
 {% block content %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col justify-center items-center">
+<div class="flex flex-col items-center justify-center min-h-[24rem] p-6 overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col justify-center items-center">
+  <img src="{% static 'image/balik.png' %}" alt="Formal" class="w-48 h-84 mb-4"/>
   <h1 class="text-center">Maaf, halaman ini tidak ditemukan.</h1>
-  <a href="{% url 'main:show_main' %}" class="text-center">Kembali ke Home</a>
+  <a href="{% url 'main:show_main' %}" class="text-center text-[#03D9FF] hover:text-black">Kembali ke Home</a>
 </div>
 {% endblock content %}

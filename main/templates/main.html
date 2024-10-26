@@ -47,28 +47,23 @@
       </div>
     </div>
   </div>
-  
-    <div class="flex flex-row justify-between items-center">
-      <div class="absolute bottom-4 right-4">
-        <div class="flex rounded-md items-center bg-[#444445] py-1 px-2 w-fit opacity-80">
-          <h1 class="text-white text-center text-sm">Last Login at: {{last_login}}</h1>
-        </div>
+
+    <div class="flex flex-row justify-between items-center mb-6">
+      <div class="flex items-center space-x-4">
+        <select class="border rounded p-2" id="filter-kategori">
+          <option value="">Filter berdasarkan kategori</option>
+          <option value="Dasi Instant">Dasi Instant</option>
+          <option value="Dasi Manual">Dasi Manual</option>
+          <option value="Dasi Kupu-Kupu">Dasi Kupu-Kupu</option>
+          <option value="Jepitan Dasi">Jepitan Dasi</option>
+        </select>
+      </div>
+      <div class="flex rounded-md items-center bg-[#444445] py-1 px-2 w-fit opacity-80">
+        <h1 class="text-white text-center text-sm">Last Login at: {{last_login}}</h1>
       </div>
     </div>
 
-    
-    {% if not product_entries %}
-    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-        <img src="{% static 'image/formal.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
-        <p class="text-center text-gray-600 mt-4">Belum ada produk pada Mujur Reborn.</p>
-    </div>
-    {% else %}
-    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
-        {% for product_entry in product_entries %}
-            {% include 'card_product.html' with product_entry=product_entry %}
-        {% endfor %}
-    </div>
-    {% endif %}
+    <div id="product_entry_cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full"></div>
 </div>
 
 <script>
@@ -127,4 +122,95 @@
       });
   });
 </script>
+
+<script>
+  async function getProductEntries(){
+    return fetch("{% url 'edit:show_json' %}").then((res) => res.json())
+  }
+</script>
+
+<script>
+  async function refreshProductEntries(kategoriTerpilih = '') {
+    document.getElementById("product_entry_cards").innerHTML = "";
+    document.getElementById("product_entry_cards").className = "";
+    const productEntries = await getProductEntries();
+    let htmlString = "";
+    let classNameString = "";
+
+    //Ini akan filter produk berdasarkan kategorinya atau tampil semua (untuk opsi default)
+    const filteredEntries = kategoriTerpilih 
+        ? productEntries.filter(item => item.fields.kategori === kategoriTerpilih) 
+        : productEntries;
+
+    if (filteredEntries.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+              <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/formal.png' %}" alt="Formal" class="w-32 h-32 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">Belum ada produk pada Mujur Reborn.</p>
+              </div>
+        `;
+    }
+
+    else {
+        classNameString = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full"
+        filteredEntries.forEach((item) => {
+            const nama_produk = DOMPurify.sanitize(item.fields.nama_produk)
+            const kategori = DOMPurify.sanitize(item.fields.kategori)
+            htmlString += `
+            <div class="card fade-in relative w-full">
+                <div class="product-card relative bg-white rounded-lg shadow-md overflow-hidden h-full">
+                    <div class="card-header animated-gradient p-4">
+                        <h3 class="product-name text-xl font-bold text-white mb-2">${nama_produk}</h3>
+                        <span class="price-tag inline-block bg-white/90 backdrop-blur-sm text-blue-600 px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
+                            Rp${item.fields.harga}
+                        </span>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <p class="font-semibold text-gray-700 mb-1">Kategori</p>
+                            <span class="text-gray-600">${kategori}</span>
+                        </div>
+                        
+                        <div class="product-image-container mb-4">
+                            <img src="${item.fields.gambar_produk}" 
+                                alt="Gambar ${nama_produk}"
+                                class="w-full h-48 object-cover rounded-lg shadow-sm">
+                        </div>
+
+                        <div class="action-buttons flex space-x-2">
+                            <a href="" 
+                              class="btn btn-edit flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition duration-300">
+                                Tambahkan ke Keranjang
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Decorative floating icons -->
+                    <svg class="floating-icon icon-1 absolute top-12 right-4 w-6 h-6 text-purple-200 opacity-50" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                    </svg>
+                    <svg class="floating-icon icon-2 absolute top-2 left-2 w-6 h-6 text-blue-200 opacity-50" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                </div>
+            </div>
+            `;
+        });
+    }
+    document.getElementById("product_entry_cards").className = classNameString;
+    document.getElementById("product_entry_cards").innerHTML = htmlString;
+}
+refreshProductEntries();
+</script>
+
+<!--Script untuk memproses logika filter produk-->
+<script>
+document.getElementById("filter-kategori").addEventListener('change', async function(){
+  const kategoriTerpilih = this.value;
+  refreshProductEntries(kategoriTerpilih)
+});
+</script>
+
 {% endblock content %}

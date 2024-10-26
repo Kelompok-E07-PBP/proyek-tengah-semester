@@ -3,7 +3,6 @@
 
 {% block meta %}
 <title>Mujur Reborn Admin</title>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
 {% endblock meta %}
 
 {% block content %}
@@ -39,6 +38,15 @@
   </div>
 
   <div class="flex flex-row justify-between items-center mb-6">
+    <div class="flex items-center space-x-4">
+      <select class="border rounded p-2" id="filter-kategori">
+        <option value="">Filter berdasarkan kategori</option>
+        <option value="Dasi Instant">Dasi Instant</option>
+        <option value="Dasi Manual">Dasi Manual</option>
+        <option value="Dasi Kupu-Kupu">Dasi Kupu-Kupu</option>
+        <option value="Jepitan Dasi">Jepitan Dasi</option>
+      </select>
+    </div>
     <div class="ml-auto space-x-4">
       <button data-modal-target="crudModal" data-modal-toggle="crudModal" 
         class="inline-flex items-center px-6 py-3 rounded-full bg-[#03d9ff] text-white text-lg font-semibold 
@@ -263,14 +271,19 @@
 </script>
 
 <script>
-  async function refreshProductEntries() {
+  async function refreshProductEntries(kategoriTerpilih = '') {
     document.getElementById("product_entry_cards").innerHTML = "";
     document.getElementById("product_entry_cards").className = "";
     const productEntries = await getProductEntries();
     let htmlString = "";
     let classNameString = "";
 
-    if (productEntries.length === 0) {
+    //Ini akan filter produk berdasarkan kategorinya atau tampil semua (untuk opsi default)
+    const filteredEntries = kategoriTerpilih 
+        ? productEntries.filter(item => item.fields.kategori === kategoriTerpilih) 
+        : productEntries;
+
+    if (filteredEntries.length === 0) {
         classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
         htmlString = `
               <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
@@ -282,7 +295,7 @@
 
     else {
         classNameString = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full"
-        productEntries.forEach((item) => {
+        filteredEntries.forEach((item) => {
             const nama_produk = DOMPurify.sanitize(item.fields.nama_produk)
             const kategori = DOMPurify.sanitize(item.fields.kategori)
             htmlString += `
@@ -407,6 +420,15 @@ refreshProductEntries();
 document.getElementById("productEntryForm").addEventListener("submit", (e) => {
     e.preventDefault();
     addProductEntry();
-  })
+  });
 </script>
+
+<!--Script untuk memproses logika filter produk-->
+<script>
+document.getElementById("filter-kategori").addEventListener('change', async function(){
+  const kategoriTerpilih = this.value;
+  refreshProductEntries(kategoriTerpilih)
+});
+</script>
+
 {% endblock content %}
