@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Hapus Ulasan</title>
+    <style>
+        /* Animasi fade-in */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h1 class="text-2xl font-bold mb-4 fade-in">Hapus Ulasan</h1>
+        <p class="fade-in">Anda yakin ingin menghapus ulasan dari {{ ulasan.user.username }} untuk produk {{ ulasan.product_name }}?</p>
+        <form method="post" action="{% url 'hapus_ulasan' ulasan.id %}" class="fade-in">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white p-2 rounded">Hapus</button>
+            <a href="{% url 'ulasan_app' %}" class="bg-gray-500 text-white p-2 rounded ml-2">Batal</a>
+        </form>
+    </div>
+
+    <script>
+        // Menambahkan kelas 'visible' pada elemen yang fade-in setelah halaman dimuat
+        document.querySelectorAll('.fade-in').forEach(function (element) {
+            element.classList.add('visible');
+        });
+    </script>
+</body>
+</html>

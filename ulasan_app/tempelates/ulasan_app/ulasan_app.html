@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Ulasan Produk</title>
+    <script src="{% static 'create_ulasan_ajax.js' %}"></script>
+    <style>
+        /* Tambahkan beberapa animasi kustom */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h1 class="text-2xl font-bold mb-4">Ulasan Produk</h1>
+        
+        <div class="mb-4">
+            <a href="{% url 'create_ulasan' %}" class="bg-blue-500 text-white p-2 rounded">Buat Ulasan</a>
+            <a href="{% url 'show_json_ajax' %}" class="bg-green-500 text-white p-2 rounded ml-2">Tampilkan Ulasan (AJAX)</a>
+        </div>
+
+        <div id="ulasan-container">
+            {% for ulasan in ulasans %}
+            <div class="bg-white shadow-md rounded px-6 py-4 mb-4 fade-in visible">
+                <h2 class="font-bold">{{ ulasan.user.username }}</h2>
+                <p class="text-gray-600">Produk: {{ ulasan.product_name }}</p>
+                <p class="text-gray-600">Rating: {{ ulasan.get_rating_display }}</p>
+                <p class="text-gray-500 text-sm">{{ ulasan.date }}</p>
+                <div class="flex justify-between mt-4">
+                    <span>Likes: {{ ulasan.likes }}</span>
+                    <span>Dislikes: {{ ulasan.dislikes }}</span>
+                </div>
+                <div class="mt-2">
+                    <a href="{% url 'hapus_ulasan' ulasan.id %}" class="text-red-500 hover:underline" onclick="return confirm('Anda yakin ingin menghapus ulasan ini?')">Hapus</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>Tidak ada ulasan yang tersedia.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Tambahkan kelas 'visible' pada elemen ulasan setelah halaman dimuat
+        document.querySelectorAll('.fade-in').forEach(function (element) {
+            element.classList.add('visible');
+        });
+    </script>
+</body>
+</html>

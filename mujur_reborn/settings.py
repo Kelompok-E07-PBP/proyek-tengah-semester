@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pembayaran',
     'keranjang',
     'ulasan',
+    'ulasan_app',
     'rest_framework',
 ]
 

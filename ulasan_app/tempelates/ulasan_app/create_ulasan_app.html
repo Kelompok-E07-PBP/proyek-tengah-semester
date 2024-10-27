@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Buat Ulasan</title>
+    <style>
+        /* Animasi fade-in */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h1 class="text-2xl font-bold mb-4 fade-in">Buat Ulasan</h1>
+        <form method="post" action="{% url 'create_ulasan' %}" class="fade-in">
+            {% csrf_token %}
+            <input type="text" name="product_name" placeholder="Nama Produk" required class="border p-2 mb-4 w-full"/>
+            <select name="rating" required class="border p-2 mb-4 w-full">
+                <option value="">Pilih Rating</option>
+                <option value="1">1-Very Poor</option>
+                <option value="2">2-Poor</option>
+                <option value="3">3-Average</option>
+                <option value="4">4-Good</option>
+                <option value="5">5-Beyond Average</option>
+            </select>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Kirim Ulasan</button>
+        </form>
+    </div>
+
+    <script>
+        // Menambahkan kelas 'visible' pada elemen yang fade-in setelah halaman dimuat
+        document.querySelectorAll('.fade-in').forEach(function (element) {
+            element.classList.add('visible');
+        });
+    </script>
+</body>
+</html>
