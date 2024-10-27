@@ -100,6 +100,8 @@
             const localTime = new Date(item.waktu).toLocaleString();
             const username = item.username;
             const isAuthor = item.username === currentUsername;
+            const nama_produk_ulas = DOMPurify.sanitize(item.nama_produk_ulas);
+            const komentar = DOMPurify.sanitize(item.komentar);
 
             htmlString += `
             <div class="relative break-inside-avoid">
@@ -111,7 +113,7 @@
                 <div class="p-4">
                   <p class="font-semibold text-lg mb-2">Nama Produk Ulas</p> 
                   <p class="text-gray-700 mb-2">
-                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${item.nama_produk_ulas}</span>
+                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${nama_produk_ulas}</span>
                   </p>
                   <p class="font-semibold text-lg mb-2">Rating</p> 
                   <p class="text-gray-700 mb-2">
@@ -119,7 +121,7 @@
                   </p>
                   <p class="font-semibold text-lg mb-2">Komentar</p> 
                   <p class="text-gray-700 mb-2">
-                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${item.komentar}</span>
+                    <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">${komentar}</span>
                   </p>
                 </div>
               </div>
