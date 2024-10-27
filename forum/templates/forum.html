@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Forum | Mujur Reborn</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'user_navbar.html' %}
+<h1><br><br><br>Forum</h1>
+<a href="{% url 'forum:create_post' %}">Buat Post Baru</a>
+
+{% if not post_entries %}
+<p>Belum ada Post di Mujur Reborn.</p>
+{% else %}
+    <div>
+        {% for post in post_entries %}
+            <div style="border: 1px solid black; padding: 10px; margin: 10px;">
+                <h2>Topik : {{ post.topic }}</h2>
+                <p>Dibuat oleh : {{ post.user.username }} pada {{ post.created_at }}</p>
+                <p>Deksripsi : {{ post.description }}</p>
+                <p>Balasan : {{ post.comment_set.count }}</p>
+                <a href="{% url 'forum:post_detail' post.id %}">Lihat Balasan</a>
+                {% if request.user == post.user %}
+                    <a href="{% url 'forum:edit_post' post.id %}">Edit</a>
+                    <a href="{% url 'forum:delete_post' post.id %}">Hapus</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock content %}

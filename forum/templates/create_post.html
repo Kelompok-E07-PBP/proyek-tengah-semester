@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Tambah Post | Mujur Reborn</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'user_navbar.html' %}
+<br><br><br>
+<h1>Tambahkan Post</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Tambahkan Post Baru</button>
+</form>
+<a href="{% url 'forum:forum_view' %}">Batalkan</a>
+{% endblock content %}

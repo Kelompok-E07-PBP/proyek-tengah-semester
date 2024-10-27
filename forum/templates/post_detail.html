@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Detail Post| Mujur Reborn</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'user_navbar.html' %}
+<br><br><br>
+<a href="{% url 'forum:forum_view' %}"><button>Kembali ke Forum</button></a>
+<h1>Balasan</h1>
+<h1>Topik : {{ post.topic }}</h1>
+<p>Dibuat oleh : {{ post.user.username }} pada {{ post.created_at }}</p>
+<p>Deksripsi : {{ post.description }}</p>
+
+<h3>Tambahkan Balasan</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Tambahkan Balasan Anda</button>
+</form>
+
+{% if not comments %}
+    <p>Belum Ada User Yang Membuat Balasan di Post Ini.</p>
+{% else %}
+    <div>
+        {% for comment in comments %}
+            <div style="border: 1px solid black; padding: 10px; margin: 10px;">
+                <p>Dibalas oleh: {{ comment.user.username }} pada {{ comment.created_at }}</p>
+                <p>{{ comment.description }}</p>
+                {% if request.user == comment.user %}
+                    <a href="{% url 'forum:edit_comment' comment.id %}">Edit</a>
+                    <a href="{% url 'forum:delete_comment' comment.id %}">Delete</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock content %}

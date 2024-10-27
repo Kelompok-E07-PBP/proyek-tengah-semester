@@ -25,4 +25,5 @@ urlpatterns = [
     path('pembayaran/', include('pembayaran.urls')),
     path('keranjang/', include('keranjang.urls')),
     path('ulasan/', include('ulasan.urls')),
+    path('forum/', include('forum.urls')),
 ]

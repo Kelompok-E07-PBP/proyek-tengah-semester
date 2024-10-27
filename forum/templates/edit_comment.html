@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Edit Balasan | Mujur Reborn</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'user_navbar.html' %}
+<br><br><br>
+<h1>Edit Balasan</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Edit Balasan Anda</button>
+</form>
+<a href="{% url 'forum:post_detail' post.id %}">Batalkan</a>
+{% endblock content %}
