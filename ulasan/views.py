@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import UlasanEntrySerializer
+from django.utils.html import strip_tags
 
 @login_required(login_url='/login')
 def show_ulasan_main(request):
@@ -69,9 +70,9 @@ def delete_ulasan(request, id):
 @require_POST
 def add_ulasan_entry_ajax(request):
     user = request.user
-    nama_produk_ulas = request.POST.get("nama_produk_ulas")
+    nama_produk_ulas = strip_tags(request.POST.get("nama_produk_ulas"))
     rating = request.POST.get("rating")
-    komentar = request.POST.get("komentar")
+    komentar = strip_tags(request.POST.get("komentar"))
     
 
     new_ulasan = UlasanEntry(
