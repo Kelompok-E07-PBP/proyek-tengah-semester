@@ -10,39 +10,39 @@
 
 <div class="flex flex-col min-h-screen">
 <div class="flex-grow container mx-auto overflow-x-hidden px-4 py-8 text-center">
-    <h1 class="text-3xl font-bold mb-6 z-10">Pembayaran</h1>
+    <h1 class="text-3xl font-bold mb-6 text-[#444445]">Pembayaran</h1>
 
     {% if keranjang_items and pengiriman %}
-    <div class="overflow-x-auto shadow-lg rounded-lg mb-8 bg-white p-6">
-        <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-            <thead class="bg-gray-200 border-b-2 border-gray-400">
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-8">
+        <table class="w-full bg-white border border-gray-400 rounded-lg">
+            <thead class="bg-[#444445] text-white">
                 <tr>
-                    <th class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase border-r border-gray-300">Produk</th>
-                    <th class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase border-r border-gray-300">Harga Satuan</th>
-                    <th class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase border-r border-gray-300">Jumlah</th>
-                    <th class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase">Subtotal Harga</th>
+                    <th class="px-6 py-3 text-center text-sm font-semibold uppercase border-gray-500">Produk</th>
+                    <th class="px-6 py-3 text-center text-sm font-semibold uppercase border-gray-500">Harga Satuan</th>
+                    <th class="px-6 py-3 text-center text-sm font-semibold uppercase border-gray-500">Jumlah</th>
+                    <th class="px-6 py-3 text-center text-sm font-semibold uppercase">Subtotal Harga</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
                 {% for item in keranjang_items %}
-                <tr class="{% cycle 'bg-white' 'bg-gray-50' %} border-b border-gray-300 hover:bg-gray-100">
-                    <td class="px-6 py-4 text-sm font-medium text-gray-900 text-center border-r border-gray-300">{{ item.product.nama_produk }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-700 text-center border-r border-gray-300">Rp {{ item.product.harga|intdot }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-700 text-center border-r border-gray-300">{{ item.quantity }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-700 font-semibold text-center">Rp {{ item.get_subtotal|intdot }}</td>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-6 py-4 text-center">{{ item.product.nama_produk }}</td>
+                    <td class="px-6 py-4 text-center">Rp {{ item.product.harga|intdot }}</td>
+                    <td class="px-6 py-4 text-center">{{ item.quantity }}</td>
+                    <td class="px-6 py-4 text-center font-semibold">Rp {{ item.get_subtotal|intdot }}</td>
                 </tr>
                 {% endfor %}
                 <tr class="bg-gray-100 border-t-2 border-gray-400">
-                    <td colspan="3" class="px-6 py-4 text-right font-semibold text-gray-700 border-r border-gray-300">Delivery City:</td>
-                    <td class="px-6 py-4 text-gray-700 font-semibold text-center">{{ pengiriman.city }}</td>
+                    <td colspan="3" class="px-6 py-4 text-right font-semibold text-gray-700">Delivery City:</td>
+                    <td class="px-6 py-4 text-center text-gray-700">{{ pengiriman.city }}</td>
                 </tr>
                 <tr class="bg-gray-100 border-t-2 border-gray-400">
-                    <td colspan="3" class="px-6 py-4 text-right font-semibold text-gray-700 border-r border-gray-300">Delivery Fee:</td>
-                    <td class="px-6 py-4 text-gray-700 font-semibold text-center">Rp {{ delivery_fee|intdot }}</td>
+                    <td colspan="3" class="px-6 py-4 text-right font-semibold text-gray-700">Delivery Fee:</td>
+                    <td class="px-6 py-4 text-center text-gray-700">Rp {{ delivery_fee|intdot }}</td>
                 </tr>
                 <tr class="bg-gray-100 border-t-2 border-gray-400">
-                    <td colspan="3" class="px-6 py-4 text-right font-semibold text-gray-700 border-r border-gray-300">Total Harga:</td>
-                    <td class="px-6 py-4 text-gray-800 font-bold text-center">Rp {{ total_harga|intdot }}</td>
+                    <td colspan="3" class="px-6 py-4 text-right font-bold text-gray-700">Total Harga:</td>
+                    <td class="px-6 py-4 text-center text-gray-800 font-bold">Rp {{ total_harga|intdot }}</td>
                 </tr>
             </tbody>
         </table>
@@ -70,58 +70,55 @@
             </div>
         </div>
     
-        <button type="submit" class="mt-6 w-64 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-transform transform hover:scale-105">
+        <button type="submit" class="mt-6 w-64 bg-[#03d9ff] hover:bg-opacity-80 text-white font-semibold py-3 rounded-lg shadow-md transition-all duration-300">
             Bayar
         </button>
     </form>
 
     {% elif not keranjang_items %}
     <div class="text-center py-10">
-        <img src="{% static 'image/keranjang_kosong.png' %}" alt="Empty Cart" class="mx-auto mb-4 w-1/3">
-        <p class="text-gray-600 text-lg mb-4">Keranjang Anda kosong. Yuk tambahkan produk ke dalam keranjang!</p>
-        <a href="{% url 'main:show_main' %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            Tambahkan Produk Sekarang
-        </a>
+        <img src="{% static 'image/keranjang_kosong.png' %}" alt="Empty Cart" class="mx-auto mb-4 w-1/5">
+        <p class="text-[#444445] text-lg mb-8">Keranjang Anda kosong. Yuk tambahkan produk ke dalam keranjang!</p>
+        <a href="{% url 'main:show_main' %}" class="bg-[#03d9ff] text-white px-6 py-2 rounded-md text-lg font-semibold hover:bg-opacity-80 transition-all duration-300">Tambahkan Produk Sekarang</a>
     </div>
 
     {% else %}
     <div class="text-center py-10">
-        <img src="{% static 'image/pengiriman_kosong.png' %}" alt="Missing Shipping" class="mx-auto mb-8 w-1/6">
-        <p class="text-gray-600 text-lg mb-4">Anda belum melengkapi data pengiriman. Silakan tambahkan informasi pengiriman!</p>
-        <a href="{% url 'pengiriman:pengiriman' %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            Lengkapi Pengiriman
-        </a>
+        <img src="{% static 'image/pengiriman_kosong.png' %}" alt="Missing Shipping" class="mx-auto mb-10 w-1/6">
+        <p class="text-[#444445] text-lg mb-8">Anda belum melengkapi data pengiriman. Silakan tambahkan informasi pengiriman!</p>
+        <a href="{% url 'pengiriman:pengiriman' %}" class="bg-[#03d9ff] text-white px-6 py-2 rounded-md text-lg font-semibold hover:bg-opacity-80 transition-all duration-300">Lengkapi Pengiriman</a>
     </div>
     {% endif %}
-    <footer class="mt-auto py-6 bg-gray-100 border-t w-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+</div>
+
+<footer class="mt-auto py-6 bg-gray-100 border-t w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
             <div class="flex items-center space-x-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#03d9ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span class="text-gray-600 font-semibold">Mujur Reborn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#03d9ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span class="text-gray-600 font-semibold">Mujur Reborn</span>
             </div>
             <p class="text-gray-500 text-sm">© 2024 Mujur Reborn. All rights reserved.</p>
             <div class="flex items-center space-x-2">
-              <span class="text-gray-600 text-sm">Pembayaran Made By:</span>
-              <a href="https://github.com/dickyybayu" class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                </svg>
-              </a>
+                <span class="text-gray-600 text-sm">Pembayaran Made By:</span>
+                <a href="https://github.com/dickyybayu" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
-          </div>
         </div>
-      </footer>
-</div>
+    </div>
+</footer>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('pembayaran-form').addEventListener('submit', function(event) {
         event.preventDefault();
-
         const formData = new FormData(this);
 
         fetch("{% url 'pembayaran:process_payment_ajax' %}", {
@@ -132,19 +129,14 @@
             },
             body: formData
         })
-        .then(response => {
-            console.log("Response status:", response.status);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log("Response data:", data);
-            
             if (data.message === 'Payment successful!') {
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil!',
-                    text: `Pembayaran berhasil dilakukan!`, 
-                    confirmButtonColor: '#3085d6',
+                    text: 'Pembayaran berhasil dilakukan!',
+                    confirmButtonColor: '#05fa26',  
                     confirmButtonText: 'OK'
                 }).then(() => {
                     window.location.href = "{% url 'main:show_main' %}";
@@ -154,17 +146,19 @@
                     icon: 'error',
                     title: 'Error!',
                     text: data.error,
+                    confirmButtonColor: '#d33'  
                 });
             }
         })
         .catch(error => {
-            console.error('Error during fetch:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
                 text: 'Terjadi kesalahan saat melakukan pembayaran.',
+                confirmButtonColor: '#d33'
             });
         });
     });
 </script>
+
 {% endblock content %}
