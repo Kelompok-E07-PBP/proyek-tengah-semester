@@ -4,6 +4,8 @@ from django.utils import timezone
 from main.models import Product
 from django.contrib.auth import get_user_model
 from edit.forms import ProductForm
+from django.core import serializers
+import json
 
 class editTest(TestCase):
 
@@ -129,6 +131,24 @@ class editTest(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertTrue(Product.objects.filter(nama_produk='DRM8-B01').exists())
 
+    # Uji coba show_json dari produk.
+    def test_show_json(self):
+        response = self.client.get(reverse('edit:show_json'))
+        self.assertEqual(response.status_code, 200)
+        
+        expected_data = [{
+            'model': 'main.product',
+            'pk': str(self.product.pk),
+            'fields': {
+                'nama_produk': 'DRM8-B01',
+                'kategori': 'Dasi Instant',
+                'harga': '30000.00',
+                'gambar_produk': 'https://down-id.img.susercontent.com/file/sg-11134201-23020-unxcmwqsignv6a@resize_w450_nl.webp'
+            }
+        }]
+        
+        actual_data = json.loads(response.content)
+        self.assertEqual(actual_data, expected_data)
 
     # Uji coba memasukkan data valid ke dalam forms.py dan lihat apakah hasilnya tetap sama.
     def test_valid_form(self):
