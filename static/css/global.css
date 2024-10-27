@@ -13,8 +13,8 @@
 .form-style form select:focus, 
 .form-style form input[type="number"]:focus {
     outline: none;
-    border-color: #FFAEBC;
-    box-shadow: 0 0 0 3px #FFAEBC;
+    border-color: #03d9ff;
+    box-shadow: 0 0 0 3px #03d9ff;
 }
 
 @keyframes shine {
