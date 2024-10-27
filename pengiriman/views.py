@@ -37,6 +37,8 @@ def pengiriman_view(request):
             pengiriman.user = request.user
             pengiriman.save()
             return redirect(f"{reverse('pembayaran:pembayaran_view')}?keranjang_id={keranjang_id}")
+        else:
+            form = PengirimanForm(request.POST)
     else:
         form = PengirimanForm()
 
@@ -50,7 +52,10 @@ def pengiriman_view(request):
 def process_pengiriman_ajax(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         user = request.user
-        keranjang = get_object_or_404(Keranjang, user=user)
+        try:
+            keranjang = Keranjang.objects.get(user=user)
+        except Keranjang.DoesNotExist:
+            return JsonResponse({'error': 'Keranjang tidak ditemukan.'}, status=404)
 
         if not keranjang.itemkeranjang_set.exists():
             return JsonResponse({'error': 'Keranjang kosong, tidak dapat melakukan pengiriman.'}, status=400)
@@ -70,15 +75,19 @@ def process_pengiriman_ajax(request):
         
         try:
             pengiriman.save()
-
             return JsonResponse({'message': 'Pengiriman berhasil dibuat!', 'pengiriman_id': pengiriman.id})
         except Exception as e:
             print("Error during pengiriman processing:", e)
             return JsonResponse({'error': 'Terjadi kesalahan saat melakukan pengiriman.'}, status=500)
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
-
+    
+@login_required(login_url='/login')
 def show_json(request):
-    data = Pengiriman.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    try:
+        data = Pengiriman.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    except Exception as e:
+        print("Error fetching data:", e)
+        return JsonResponse({'error': 'Terjadi kesalahan dalam mengambil data.'}, status=500)
 
