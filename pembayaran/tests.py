@@ -100,7 +100,7 @@ class PembayaranTests(TestCase):
     def test_process_payment_ajax_without_payment_method(self):
         response = self.client.post(
             self.process_payment_url,
-            {},  # No payment_method provided
+            {},  
             HTTP_X_REQUESTED_WITH="XMLHttpRequest"
         )
         self.assertEqual(response.status_code, 400)
