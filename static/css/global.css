@@ -212,3 +212,104 @@ textarea:focus {
     }
   
   }
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #388eff 0%, #03d9ff 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 400px;
+  margin: 2rem auto;
+}
+.product-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+.card-header {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.card-body {
+  padding: 20px;
+  background: #f8f8f8; 
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-edit {
+  background: #4ecdc4;
+  color: white;
+}
+.btn-delete {
+  background: #fc5c65;
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.floating-icon {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  fill: #f744441c; 
+  animation: float 3s ease-in-out infinite;
+}
+.icon-1 { top: 100px; left: 20px; }
+.icon-2 { top: 60px; right: 20px; animation-delay: 1s; }
+.icon-3 { bottom: 20px; left: 180px; animation-delay: 2s; }
+.btn-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.category-button {
+  color: #444445; /* Default text color */
+  border: 2px solid #444445; /* Default border */
+  background-color: transparent; /* Default background */
+  transition: all 0.3s ease; /* Smooth transition for hover and active states */
+}
+
+.category-button:hover {
+  background-color: #444445; /* Hover background */
+  color: white; /* Hover text color */
+}
+
+.active-category {
+  background-color: #444445; 
+  color: white !important; 
+  border-color: 2px solid #444445; 
+}

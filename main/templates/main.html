@@ -97,71 +97,51 @@
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie1.webp' %}" alt="Tie 1" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie2.webp' %}" alt="Tie 2" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie3.webp' %}" alt="Tie 3" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie4.webp' %}" alt="Tie 4" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie5.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie6.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie7.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie8.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie9.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
                 <div class="flex-none w-64">
                     <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <img src="{% static 'image/tie10.webp' %}" alt="Tie 5" class="w-full h-64 object-cover"/>
-                        <div class="p-4 bg-white">
-                        </div>
                     </div>
                 </div>
             </div>
@@ -173,7 +153,7 @@
         <div class="flex items-center space-x-4">
             <div class="flex space-x-2 overflow-x-auto">
                 <!-- Filter Buttons with data-category attributes -->
-                <button class="category-button px-4 py-2 bg-[#444445] text-white rounded-md hover:bg-[#03d9ff] transition-colors" data-category="">
+                <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="">
                     Semua
                 </button>
                 <button class="category-button px-4 py-2 border border-[#444445] text-[#444445] rounded-md hover:bg-[#444445] hover:text-white transition-colors" data-category="Dasi Instant">
@@ -335,8 +315,8 @@
             <div class="p-4">
               <h3 class="text-lg font-semibold text-gray-800 mb-1">${nama_produk}</h3>
               <p class="text-sm text-gray-500 mb-4">${kategori}</p>
-              <p class="text-[#03d9ff] font-bold text-lg">Rp${harga}</p>
-              <button class="mt-4 w-full bg-[#444445] text-white py-2 rounded-md hover:bg-[#03d9ff] transition-colors" onclick="openModal('${item.pk}', '${nama_produk}', '${item.fields.harga}')">Tambah ke Keranjang!</button>
+              <p class="text-[#444445] font-bold text-lg">Rp${harga}</p>
+              <button class="mt-4 w-full bg-[#03d9ff] text-white py-2 rounded-md hover:bg-[#4de0fa] transition-colors" onclick="openModal('${item.pk}', '${nama_produk}', '${item.fields.harga}')">Tambah ke Keranjang!</button>
             </div>
           </div>`;
       });
@@ -345,8 +325,10 @@
 
   document.querySelectorAll('.category-button').forEach(button => {
     button.addEventListener('click', function() {
+    document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active-category'));
       const selectedCategory = this.getAttribute('data-category');
       refreshProductEntries(selectedCategory);
+      button.classList.add('active-category');
     });
   });
 
