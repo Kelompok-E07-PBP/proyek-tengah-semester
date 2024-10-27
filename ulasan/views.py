@@ -6,14 +6,18 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import UlasanEntrySerializer
 
 @login_required(login_url='/login')
 def show_ulasan_main(request):
-    ulasan_entries = UlasanEntry.objects.all()
-
+    current_username = request.user.username if request.user.is_authenticated else None
     context = {
+        'current_username': current_username,
         'nama_halaman' : 'Ulasan',
-        'ulasan_entries': ulasan_entries,
     }
 
     return render(request, "ulasan_main.html", context)
@@ -34,9 +38,11 @@ def create_ulasan_entry(request):
     context = {'form': form}
     return render(request, 'create_ulasan_entry.html', context)
 
+@api_view(['GET'])
 def show_json(request):
     data = UlasanEntry.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    serializer = UlasanEntrySerializer(data, many=True)
+    return Response(serializer.data)
 
 @login_required(login_url='/login')
 def edit_ulasan(request, id):
@@ -58,3 +64,20 @@ def delete_ulasan(request, id):
     ulasan = UlasanEntry.objects.get(pk = id)
     ulasan.delete()
     return HttpResponseRedirect(reverse('ulasan:show_ulasan_main'))
+
+@csrf_exempt
+@require_POST
+def add_ulasan_entry_ajax(request):
+    user = request.user
+    nama_produk_ulas = request.POST.get("nama_produk_ulas")
+    rating = request.POST.get("rating")
+    komentar = request.POST.get("komentar")
+    
+
+    new_ulasan = UlasanEntry(
+        user=user, nama_produk_ulas=nama_produk_ulas,
+        rating=rating, komentar=komentar
+    )
+    new_ulasan.save()
+
+    return HttpResponse(b"CREATED", status=201)

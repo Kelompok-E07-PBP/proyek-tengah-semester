@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pembayaran',
     'keranjang',
     'ulasan',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
