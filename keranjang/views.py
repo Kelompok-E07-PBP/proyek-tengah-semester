@@ -202,3 +202,29 @@ def hapus_dari_keranjang_ajax(request, item_id):
             'success': False,
             'message': 'Terjadi kesalahan saat menghapus item'
         }, status=500)
+    
+@login_required(login_url='/login')
+def show_json(request):
+    keranjang, created = Keranjang.objects.get_or_create(user=request.user)
+    items = keranjang.itemkeranjang_set.all()
+    
+    cart_items = []
+    for item in items:
+        cart_items.append({
+            'id': str(item.id),
+            'product_name': item.product.nama_produk,
+            'quantity': item.quantity,
+            'price': float(item.product.harga),
+            'subtotal': float(item.get_subtotal())
+        })
+    
+    data = {
+        'username': request.user.username,
+        'cart_id': str(keranjang.id),
+        'total': float(keranjang.get_total()),
+        'items': cart_items,
+        'created_at': keranjang.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        'updated_at': keranjang.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+    }
+    
+    return JsonResponse(data, safe=False)
