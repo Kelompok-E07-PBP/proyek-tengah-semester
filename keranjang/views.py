@@ -10,8 +10,10 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 import logging
 import uuid
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/login')
+@csrf_exempt
 def keranjang_detail(request):
     keranjang, created = Keranjang.objects.get_or_create(user=request.user)
     items = keranjang.itemkeranjang_set.all()
@@ -26,6 +28,7 @@ def keranjang_detail(request):
     return render(request, 'keranjang_detail.html', context)  
 
 @login_required(login_url='/login')
+@csrf_exempt
 def tambah_ke_keranjang(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     keranjang, created = Keranjang.objects.get_or_create(user=request.user)
@@ -57,6 +60,7 @@ def tambah_ke_keranjang(request, product_id):
     return render(request, 'tambah_ke_keranjang.html', context)  
 
 @login_required(login_url='/login')
+@csrf_exempt
 def update_keranjang(request, item_id):
     item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
     
@@ -75,6 +79,7 @@ def update_keranjang(request, item_id):
     return redirect('keranjang_detail')
 
 @login_required(login_url='/login')
+@csrf_exempt
 def hapus_dari_keranjang(request, item_id):
     item_keranjang = get_object_or_404(ItemKeranjang, id=item_id, keranjang__user=request.user)
     item_keranjang.delete()
@@ -82,6 +87,7 @@ def hapus_dari_keranjang(request, item_id):
     return redirect('keranjang_detail')
 
 @login_required(login_url='/login')
+@csrf_exempt
 def checkout(request):
     keranjang = get_object_or_404(Keranjang, user=request.user)
     if keranjang.itemkeranjang_set.count() == 0:
@@ -95,6 +101,7 @@ def checkout(request):
 logger = logging.getLogger(__name__)
 
 @login_required(login_url='/login')
+@csrf_exempt
 @require_POST
 def tambah_ke_keranjang_ajax(request, product_id):
     try:
@@ -147,6 +154,7 @@ def tambah_ke_keranjang_ajax(request, product_id):
     
 
 @login_required(login_url='/login')
+@csrf_exempt
 @require_POST
 def update_keranjang_ajax(request, item_id):
     try:
@@ -181,6 +189,7 @@ def update_keranjang_ajax(request, item_id):
         }, status=500)
 
 @login_required(login_url='/login')
+@csrf_exempt
 @require_POST
 def hapus_dari_keranjang_ajax(request, item_id):
     try:
@@ -204,6 +213,7 @@ def hapus_dari_keranjang_ajax(request, item_id):
         }, status=500)
     
 @login_required(login_url='/login')
+@csrf_exempt
 def show_json(request):
     keranjang, created = Keranjang.objects.get_or_create(user=request.user)
     items = keranjang.itemkeranjang_set.all()
