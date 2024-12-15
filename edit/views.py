@@ -1,3 +1,4 @@
+import uuid
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.shortcuts import render, redirect
@@ -93,3 +94,21 @@ def create_product_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
+def delete_product_entry_flutter(request, id):
+    try:
+        # Convert the passed string to a UUID
+        product_uuid = uuid.UUID(id)
+        
+        # Query the database with the UUID
+        product_entry = Product.objects.get(pk=product_uuid)
+        product_entry.delete()
+        
+        return JsonResponse({'status': 'success', 'message': 'Product deleted successfully'})
+    
+    except ValueError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid UUID format'}, status=400)
+    
+    except Product.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
