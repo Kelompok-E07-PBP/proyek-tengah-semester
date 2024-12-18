@@ -6,6 +6,8 @@ from pengiriman.models import Pengiriman
 from keranjang.models import Keranjang
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+
 
 @login_required(login_url='/login')
 def pembayaran_view(request):
@@ -53,8 +55,9 @@ def pembayaran_view(request):
     return render(request, 'pembayaran.html', context)
 
 @login_required(login_url='/login')
+@csrf_exempt
 def process_payment_ajax(request):
-    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.method == "POST":
         user = request.user
         keranjang = get_object_or_404(Keranjang, user=user)
 
