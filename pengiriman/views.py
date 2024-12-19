@@ -1,5 +1,6 @@
 # pengiriman/views.py
-from django.shortcuts import render, redirect, get_object_or_404
+import json
+from django.shortcuts import render, redirect
 from pengiriman.models import Pengiriman
 from pengiriman.forms import PengirimanForm
 from django.contrib.auth.decorators import login_required
@@ -7,16 +8,9 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from keranjang.models import Keranjang
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render, redirect, get_object_or_404
-from pengiriman.models import Pengiriman
-from pengiriman.forms import PengirimanForm
-from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.http import HttpResponse, JsonResponse
-from keranjang.models import Keranjang
-from django.urls import reverse
-
+@csrf_exempt
 @login_required(login_url='/login')
 def pengiriman_view(request):
     keranjang_id = request.GET.get('keranjang_id')
@@ -49,8 +43,9 @@ def pengiriman_view(request):
     })
 
 @login_required(login_url='/login')
+@csrf_exempt
 def process_pengiriman_ajax(request):
-    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.method == "POST":
         user = request.user
         try:
             keranjang = Keranjang.objects.get(user=user)
@@ -72,7 +67,7 @@ def process_pengiriman_ajax(request):
             postal_code=form_data.get('postal_code'),
             courier=form_data.get('courier')
         )
-        
+
         try:
             pengiriman.save()
             return JsonResponse({'message': 'Pengiriman berhasil dibuat!', 'pengiriman_id': pengiriman.id})
@@ -81,7 +76,8 @@ def process_pengiriman_ajax(request):
             return JsonResponse({'error': 'Terjadi kesalahan saat melakukan pengiriman.'}, status=500)
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
-    
+
+@csrf_exempt
 @login_required(login_url='/login')
 def show_json(request):
     try:
@@ -90,4 +86,3 @@ def show_json(request):
     except Exception as e:
         print("Error fetching data:", e)
         return JsonResponse({'error': 'Terjadi kesalahan dalam mengambil data.'}, status=500)
-
