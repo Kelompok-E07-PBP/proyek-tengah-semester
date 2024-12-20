@@ -55,10 +55,8 @@ def pembayaran_view(request):
     return render(request, 'pembayaran.html', context)
 
 def get_keranjang_dan_pengiriman_json(request):
-    """Menggabungkan data keranjang dan pengiriman user ke dalam satu endpoint JSON."""
     user = request.user
 
-    # Data keranjang
     keranjang = Keranjang.objects.get_or_create(user=user)[0]
     keranjang_items = keranjang.itemkeranjang_set.all()
     keranjang_items_data = [
@@ -71,7 +69,6 @@ def get_keranjang_dan_pengiriman_json(request):
     ]
     total_harga_keranjang = keranjang.get_total()
 
-    # Data pengiriman
     try:
         pengiriman = Pengiriman.objects.filter(user=user).latest('created_at')
         city = pengiriman.city
@@ -83,7 +80,6 @@ def get_keranjang_dan_pengiriman_json(request):
 
     total_harga = total_harga_keranjang + delivery_fee
 
-    # Buat JSON response
     response_data = {
         'keranjang': {
             'items': keranjang_items_data,
@@ -114,7 +110,7 @@ def process_payment_ajax(request):
             return JsonResponse({'error': 'Please select a payment method.'}, status=400)
 
         try:
-            pengiriman = Pengiriman.objects.get(user=user)
+            pengiriman = Pengiriman.objects.filter(user=user).latest('created_at')
             city = pengiriman.city
             delivery_fee = calculate_delivery_fee(city)
         except Pengiriman.DoesNotExist:
