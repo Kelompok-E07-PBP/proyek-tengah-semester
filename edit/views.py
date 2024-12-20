@@ -1,4 +1,5 @@
 import uuid
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.shortcuts import render, redirect
@@ -10,7 +11,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
-import json
 from django.http import JsonResponse
 from decimal import Decimal
 
@@ -112,3 +112,42 @@ def delete_product_entry_flutter(request, id):
     
     except Product.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+
+@csrf_exempt
+def update_product_entry_flutter(request, id):
+    if request.method == "PUT":  # Pakai put untuk operasi update
+        try:
+            # Ubah string ID menjadi UUID
+            product_uuid = uuid.UUID(id)
+            
+            # Ambil produk dengan id yang diberikan.
+            product_entry = Product.objects.get(pk=product_uuid)
+            
+            # Ubah produk tersebut menjadi json.
+            data = json.loads(request.body)
+
+            # Ambil atribut dari request data
+            namaProduk = data['fields']['nama_produk']
+            kategori = data['fields']['kategori']
+            harga = data['fields']['harga']
+            gambarProduk = data['fields']['gambar_produk']
+            
+            # Update atribut baru dari produk.
+            product_entry.nama_produk = namaProduk
+            product_entry.kategori = kategori
+            product_entry.harga = Decimal(harga)
+            product_entry.gambar_produk = gambarProduk
+            
+            # Simpan produk yang sudah diubah.
+            product_entry.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Product updated successfully'})
+        
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid UUID format'}, status=400)
+        except Product.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid HTTP method'}, status=405)
