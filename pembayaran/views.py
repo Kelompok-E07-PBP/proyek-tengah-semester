@@ -54,6 +54,50 @@ def pembayaran_view(request):
     }
     return render(request, 'pembayaran.html', context)
 
+def get_keranjang_dan_pengiriman_json(request):
+    """Menggabungkan data keranjang dan pengiriman user ke dalam satu endpoint JSON."""
+    user = request.user
+
+    # Data keranjang
+    keranjang = Keranjang.objects.get_or_create(user=user)[0]
+    keranjang_items = keranjang.itemkeranjang_set.all()
+    keranjang_items_data = [
+        {
+            'product_name': item.product.nama_produk,
+            'price': float(item.product.harga),
+            'quantity': item.quantity,
+            'subtotal': float(item.get_subtotal())
+        } for item in keranjang_items
+    ]
+    total_harga_keranjang = keranjang.get_total()
+
+    # Data pengiriman
+    try:
+        pengiriman = Pengiriman.objects.filter(user=user).latest('created_at')
+        city = pengiriman.city
+        delivery_fee = calculate_delivery_fee(city)
+    except Pengiriman.DoesNotExist:
+        pengiriman = None
+        city = None
+        delivery_fee = 0
+
+    total_harga = total_harga_keranjang + delivery_fee
+
+    # Buat JSON response
+    response_data = {
+        'keranjang': {
+            'items': keranjang_items_data,
+            'total_harga_keranjang': float(total_harga_keranjang)
+        },
+        'pengiriman': {
+            'city': city,
+            'delivery_fee': float(delivery_fee)
+        },
+        'total_harga': float(total_harga)
+    }
+
+    return JsonResponse(response_data)
+
 @login_required(login_url='/login')
 @csrf_exempt
 def process_payment_ajax(request):
